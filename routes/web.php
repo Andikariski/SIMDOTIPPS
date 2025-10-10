@@ -1,0 +1,37 @@
+<?php
+
+use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Opd;
+use App\Livewire\Admin\Operator;
+use App\Livewire\Admin\Rap;
+use App\Livewire\Admin\SubKegiatan;
+use App\Livewire\Admin\SuperAdminAuth;
+use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
+
+Route::get('/', function () {
+    return redirect('login');
+})->name('login');
+
+// Route::view('dashboard', 'dashboard')
+//     ->middleware(['auth', 'verified'])
+//     ->name('dashboard');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('/opd', Opd::class)->name('opd');
+    Route::get('/operator', Operator::class)->name('operator');
+    Route::get('/rap', Rap::class)->name('rap');
+    Route::get('/subKegiatan', SubKegiatan::class)->name('subKegiatan');
+
+    //Route untuk Akses Super Admin / Bukan
+    Route::get('/not-acces', SuperAdminAuth::class)->name('not-acces');
+
+
+    Route::redirect('settings', 'settings/profile');
+    Volt::route('settings/profile', 'settings.profile')->name('profile.edit');
+    Volt::route('settings/password', 'settings.password')->name('password.edit');
+    Volt::route('settings/appearance', 'settings.appearance')->name('appearance.edit');
+});
+
+require __DIR__.'/auth.php';
