@@ -1,88 +1,20 @@
-{{-- <aside class="sidebar px-3 rounded-1 bg-white d-flex flex-column shadow-sm " x-cloak
-    :class="{ 'collapsed': !sidebarOpen }" style="transition: all 0.3s ease;">
-    <div class=""> --}}
-        {{-- <h2 class="fs-5 mb-4">SIMDOTIPPS</h2> --}}
-        {{-- <img src="{{ asset('assets/img/Logo.PNG') }}" alt="Logo SIMDOTIPPS" class="img-fluid" style="">
-    </div>
-    <nav class="nav flex-column">
-        <ul class="nav nav-pils flex-column">
-
-        
-            <li class="nav-item">
-                <a wire:navigate href="{{ route('dashboard') }}"
-                class="nav-link rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('dashboard') ? 'bg-primary text-light' : 'bg-white text-dark' }}">
-                <i class="bi bi-speedometer2 {{ request()->routeIs('dashboard') ? 'text-light' : 'text-dark' }}"></i>
-                <span class="fs-6">Dashboard</span>
-                </a>
-            </li>
-        
-            <li class="nav-item">
-                <a wire:navigate href="{{ route('subKegiatan') }}" class="nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('subKegiatan') ? 'bg-primary text-light' : 'bg-white text-dark' }}">
-                <i class="bi bi-clipboard-check {{ request()->routeIs('subKegiatan') ? 'text-light' : 'text-dark' }}"></i>
-                <span>Data Sub Kegiatan</span>
-                </a>
-            </li>
-            
-            <li class="nav-item" x-data="{ open: collapsed.orders }">
-                <button
-                    class="btn btn-toggle w-100 d-flex align-items-center justify-content-between nav-link text-dark"
-                    @click="open = !open; saveState('orders', open)">
-                    <span class="d-flex align-items-center gap-1">
-                        <i class="bi bi-folder"></i>
-                        <span>Data RAP</span>
-                    </span>
-                    <i class="bi bi-caret-right transition-transform duration-300"
-                        :style="{ transform: open ? 'rotate(90deg)' : 'rotate(0deg)' }">
-                    </i>
-                </button>
-                <div class="collapse" :class="{ 'show': open }">
-                    <ul class="btn-toggle-nav list-unstyled ps-4 pb-2">
-                        <li class="nav-item"><a class="nav-link text-dark" href="#"> <i
-                                    class="bi bi-dot"></i>RAP Awal</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link text-dark" href="#"> <i
-                                    class="bi bi-dot"></i>RAP Perubahan</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-        
-
-        @if (Auth()->user()->is_admin == 1)
-             <li class="nav-item">
-                <a wire:navigate href="{{ route('operator') }}"
-                    class="nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('operator') ? 'bg-primary text-light' : 'bg-white text-dark' }}">
-                    <i class="bi bi-people {{ request()->routeIs('operator') ? 'text-light' : 'text-dark' }}"></i>
-                    <span>Data Operator</span>
-                </a>
-            </li>
-            
-             <li class="nav-item">
-                <a wire:navigate href="{{ route('opd') }}"
-                    class="nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('opd') ? 'bg-primary text-light' : 'bg-white text-dark' }}">
-                    <i class="bi bi-buildings {{ request()->routeIs('opd') ? 'text-light' : 'text-dark' }}"></i>
-                    <span>Data OPD</span>
-                </a>
-            </li>
-            @endif
-        </ul>
-    </nav>
-</aside> --}}
-
 <div class="sidebar bg-white border border-end-light" :class="{ 'collapsed': sidebarCollapsed, 'show': showSidebar }">
-    <div class=" d-flex flex-column align-items-center w-100 rounded-lg h-100 px-2 py-2">
+    <div class=" d-flex flex-column align-items-center w-100 rounded-lg h-100 px-2 ">
         <div class="brand-wrapper px-2" style="">
-            <div class="d-flex align-items-center">
+            <div class="d-flex ">
                 <a href="{{ route('dashboard') }}">
                     <div class="oveflow-hidden d-flex align-items-center justify-content-center"
                         style="height: 60px; width: auto" :class="{ 'me-2': !sidebarCollapsed }">
                         <div class="d-flex align-items-center justify-content-center my-3">
-                            <img src="{{ asset('assets/img/Logo.PNG') }}" alt="Logo SIMDOTIPPS" class="img-fluid logo-simdoti" style="max-width: 260px;">
+                            <img src="{{ asset('assets/img/simdotiadmin.PNG') }}" alt="Logo SIMDOTIPPS" class="img-fluid logo-simdoti" style="max-width: 70px;">
                         </div>
                     </div>
                 </a>
                 {{-- <p class="fw-semibold fs-5 text-dark" x-show="!sidebarCollapsed">BAPPERIDA
                     PPS</p> --}}
+                    <div class="d-flex align-items-center justify-content-center my-1 mb-3">
+                        <img src="{{ asset('assets/img/Namaweb.PNG') }}" alt="Logo SIMDOTIPPS" class="img-fluid logo-simdoti" style="max-width: 100px;"  x-show="!sidebarCollapsed">
+                    </div>
             </div>
             <button class="btn btn-outline-dark" x-show="showSidebar" type="button" @click="showSidebar = false">
                 <i class="bi bi-x fw-2"></i>
@@ -114,7 +46,7 @@
                     class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('operator') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
                     :class="{ 'justify-content-center': sidebarCollapsed }">
                     <i
-                        class="bi bi-clipboard-check {{ request()->routeIs('operator') ? 'text-light' : 'text-dark' }}"></i>
+                        class="bi bi-pc-display-horizontal {{ request()->routeIs('operator') ? 'text-light' : 'text-dark' }}"></i>
                     <span x-show="!sidebarCollapsed">Operator</span>
                 </a>
             </li>
@@ -127,6 +59,15 @@
                     <span x-show="!sidebarCollapsed">Data OPD</span>
                 </a>
             </li>
+            {{-- <li class="nav-item">
+                <a wire:navigate href="{{ route('opd') }}"
+                    class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('opd') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
+                    :class="{ 'justify-content-center': sidebarCollapsed }">
+                    <i
+                        class="bi bi-cash-coin {{ request()->routeIs('opd') ? 'text-light' : 'text-dark' }}"></i>
+                    <span x-show="!sidebarCollapsed">Data Pagu</span>
+                </a>
+            </li> --}}
             @endif
             {{-- <li class="nav-item">
                 <a wire:navigate href="{{ route('admin.jabatan.index') }}"

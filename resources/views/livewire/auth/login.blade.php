@@ -85,8 +85,9 @@ new #[Layout('components.layouts.auth')] class extends Component {
         <div class="col-md-5 login-left d-none d-md-flex align-items-center justify-content-center text-white p-4"
             style="background: linear-gradient(135deg, #0d6efd, #00bfff);">
             <div class="text-center">
-                <h2 class="fw-bold">SIMDOTIPPS</h2>
-                <p class="mt-3">Sistem Monitoring Dana Otsus & DTI.</p>
+                {{-- <h2 class="fw-bold">SIMDOTIPPS</h2> --}}
+                 <img src="{{ asset('assets/img/simdoti2.PNG') }}" alt="Logo SIMDOTIPPS" class="img-fluid logo-simdoti" style="max-width: 220px;">
+                <p class="mt-1">Transparansi & Akuntabilitas<br> Dana Otsus & DTI</p>
             </div>
         </div>
         <div class="col-md-7 p-5">

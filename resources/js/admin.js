@@ -1,5 +1,6 @@
 import * as bootstrap from "bootstrap";
 import Swal from "sweetalert2";
+import ApexCharts from "apexcharts";
 
 // Setup Toast sekali saja
 const Toast = Swal.mixin({

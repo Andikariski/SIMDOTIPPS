@@ -3,7 +3,7 @@
 {{-- @livewireScripts --}}
 
 
-<body x-cloak x-data="{ sidebarCollapsed: $persist(false), showSidebar: false }">
+<body x-cloak x-data="{ sidebarCollapsed: $persist(false), showSidebar: false }" style="background-color:#fafafa">
         <!-- Sidebar -->
         @include('partials.admin.layout.sidebar')
 
@@ -13,7 +13,7 @@
             @include('partials.admin.layout.header')
 
             <!-- Main -->
-            <main class="px-4 py-3 bg-white rounded-1 shadow-sm">
+            <main class="px-4 py-3 bg-white rounded-1 border m-2">
                 {{ $slot }}
             </main>
         </div>

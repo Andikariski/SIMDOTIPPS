@@ -314,3 +314,94 @@ body {
         border-radius: 0;
     }
 }
+
+/* Card dengan list (garis warna di kiri) */
+.card-border {
+    position: relative;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Efek hover opsional */
+.card-border:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Garis di sisi kiri */
+.card-border::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px; /* ketebalan garis */
+    height: 100%;
+    border-radius: 6px 0 0 6px;
+    background-color: var(--card-line-color, #3b82f6); /* default biru */
+}
+
+/* Warna varian */
+.card-border.putih::before {
+    background-color: #ffffff;
+}
+
+.card-border.blue::before {
+    background-color: #219ebc;
+}
+
+.card-border.hijau::before {
+    background-color: #4caf50;
+}
+
+.card-border.orange::before {
+    background-color: #ffb703;
+}
+
+.card-border.danger::before {
+    background-color: #dc3545;
+}
+.subkegiatan {
+    color: #dc3545;
+}
+
+/* ===== Modal Backdrop (fade-in/out smooth) ===== */
+.modal-backdrop-custom {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-backdrop-custom[x-cloak="false"],
+.modal-backdrop-custom[x-show="true"] {
+    opacity: 1;
+}
+
+/* ===== Modal Backdrop (fade-in/out smooth) ===== */
+.modal-backdrop-custom {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-backdrop-custom[x-cloak="false"],
+.modal-backdrop-custom[x-show="true"] {
+    opacity: 1;
+}
+
+/* ===== Modal Scale Animation (zoom in/out) ===== */
+.modal-scale {
+    transform: scale(0.95);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.modal-scale[x-show="true"] {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* ===== Bootstrap fix: prevent scroll when modal active ===== */
+body.modal-open {
+    overflow: hidden;
+}

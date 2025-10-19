@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace App\Livewire\Admin\LWopd;
 
 use App\Livewire\Admin\SuperAdminAuth as AdminSuperAdminAuth;
 use Livewire\Component;
@@ -10,15 +10,17 @@ use Livewire\Attributes\On;
 use App\Models\Opd as ModelsOpd;
 use Livewire\WithPagination;
 
-
 class Opd extends AdminSuperAdminAuth
-{
-    use WithPagination;
+{ use WithPagination;
     public $search = '';
 
     public $nama_opd;
     public $kode_opd;
     public $alamat_opd;
+
+    public $namaOpd;
+    public $kodeOpd; 
+    public $alamatOpd;
 
 
     public $isEdit = false;
@@ -33,9 +35,9 @@ class Opd extends AdminSuperAdminAuth
     protected function rules()
     {
         $rules = [
-            'nama_opd'      => 'required|string',
-            'kode_opd'      => 'required|string',
-            'alamat_opd'    => 'required|string',
+            'namaOpd'      => 'required|string',
+            'kodeOpd'      => 'required|string',
+            'alamatOpd'    => 'required|string',
         ];
 
 
@@ -60,12 +62,42 @@ class Opd extends AdminSuperAdminAuth
 
     public function resetForm()
     {
-        $this->nama_opd = '';
-        $this->kode_opd = '';
-        $this->alamat_opd = '';
+        $this->namaOpd = '';
+        $this->kodeOpd = '';
+        $this->alamatOpd = '';
         $this->opdId = null;
         $this->isEdit = false;
         $this->resetErrorBag();
+    }
+
+      public function openEditModal($opdiId)
+    {
+        $opd = ModelsOpd::find($opdiId);
+
+        if ($opd) {
+            $this->opdId = $opd->id;
+            $this->namaOpd = $opd->nama_opd;
+            $this->kodeOpd = $opd->kode_opd;
+            $this->alamatOpd = $opd->alamat_opd;
+            $this->isEdit = true;
+            $this->modalTitle = 'Edit Data OPD';
+            $this->showModal = true;
+        }
+    }
+
+    public function openDetailModal($opdiId)
+    {
+         $opd = ModelsOpd::find($opdiId);
+
+        if ($opd) {
+            $this->opdId = $opd->id;
+            $this->namaOpd = $opd->nama_opd;
+            $this->kodeOpd = $opd->kode_opd;
+            $this->alamatOpd = $opd->alamat_opd;
+            $this->isEdit = true;
+            $this->modalTitle = 'Detail Data OPD';
+            $this->showDetailModal = true;
+        }
     }
 
     public function simpan()
@@ -76,18 +108,18 @@ class Opd extends AdminSuperAdminAuth
                 // Update data
                 $opd = ModelsOpd::find($this->opdId);
                 $opd->update([
-                    'nama_opd' => $this->nama_opd,
-                    'kode_opd' => $this->kode_opd,
-                    'alamat_opd' => $this->alamat_opd,
+                    'nama_opd' => $this->namaOpd,
+                    'kode_opd' => $this->kodeOpd,
+                    'alamat_opd' => $this->alamatOpd,
                 ]);
 
-                $this->dispatch('success-edit-data');
+                $this->dispatch('success-add-data',message: 'Berhasil Mengubah Data OPD');
             } else {
                 // Tambah data baru
                 ModelsOpd::create([
-                   'nama_opd' => $this->nama_opd,
-                    'kode_opd' => $this->kode_opd,
-                    'alamat_opd' => $this->alamat_opd,
+                   'nama_opd' => $this->namaOpd,
+                    'kode_opd' => $this->kodeOpd,
+                    'alamat_opd' => $this->alamatOpd,
                 ]);
 
                 $this->dispatch('success-add-data',message: 'Berhasil Menambah Data OPD');
@@ -97,17 +129,15 @@ class Opd extends AdminSuperAdminAuth
             $this->closeModal();
     }
 
-
-
-    #[Layout('components.layouts.admin',['pageTitle' => 'OPD'])]
+    #[Layout('components.layouts.admin',['pageTitle' => 'Data OPD'])]
     public function render()
     {
         $opd = ModelsOpd::query()
         // ->with('')
         ->where('nama_opd', 'like', "%{$this->search}%")
         ->latest()
-        ->paginate(10);
-        return view('livewire.admin.opd',['opds'=>$opd]);
+        ->paginate(7);
+        return view('livewire.admin.LW_opd.opd',['opds'=>$opd]);
     }
 
     #[On('delete-data-opd')]
@@ -123,4 +153,5 @@ class Opd extends AdminSuperAdminAuth
             $this->dispatch('failed-delete-data',message: 'Gagal Menghapus Data OPD');
         }
     }
+
 }

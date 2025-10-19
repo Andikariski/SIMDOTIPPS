@@ -38,7 +38,7 @@
 </header> --}}
 
 
-<header class="header d-flex justify-content-between align-items-center ms-2">
+<header class="header d-flex justify-content-between rounded-1 align-items-center ms-2 border border-end-light">
     <div class="d-flex align-items-center">
         <!-- Desktop Sidebar Toggle -->
         <button class="toggle-btn me-3 d-none d-md-block" @click="sidebarCollapsed = !sidebarCollapsed"
@@ -52,7 +52,7 @@
         </button>
 
         <div>
-            <h4 class="mb-0">{{ $pageTitle ?? 'Dashboard' }}</h4>
+            <h5 class="mb-0" style="color:rgb(46, 46, 46)">{{ $pageTitle ?? 'Dashboard' }}</h5>
         </div>
     </div>
 

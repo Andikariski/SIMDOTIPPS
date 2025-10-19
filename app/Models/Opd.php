@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Opd extends Model
 {
     use HasFactory;
-
+    protected $table = 'tbl_opd';
     protected $fillable = [
         'nama_opd',
         'kode_opd',

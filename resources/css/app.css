@@ -145,3 +145,12 @@ select:focus[data-flux-control] {
         border-radius: 0;
     }
 }
+
+/* ===== Bootstrap fix: prevent scroll when modal active ===== */
+body.modal-open {
+    overflow: hidden;
+}
+
+.sidebar {
+    background-color: #222656;
+}

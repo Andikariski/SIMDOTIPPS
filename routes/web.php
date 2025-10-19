@@ -1,10 +1,10 @@
 <?php
 
 use App\Livewire\Admin\Dashboard;
-use App\Livewire\Admin\Opd;
-use App\Livewire\Admin\Operator;
-use App\Livewire\Admin\Rap;
-use App\Livewire\Admin\SubKegiatan;
+use App\Livewire\Admin\LWsubKegiatan\SubKegiatan;
+use App\Livewire\Admin\LWopd\Opd;
+use App\Livewire\Admin\LWoperator\Operator;
+use App\Livewire\Admin\LWrap\Rap;
 use App\Livewire\Admin\SuperAdminAuth;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -22,7 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/opd', Opd::class)->name('opd');
     Route::get('/operator', Operator::class)->name('operator');
     Route::get('/rap', Rap::class)->name('rap');
-    Route::get('/subKegiatan', SubKegiatan::class)->name('subKegiatan');
+    Route::get('/sub-Kegiatan', SubKegiatan::class)->name('subKegiatan');
 
     //Route untuk Akses Super Admin / Bukan
     Route::get('/not-acces', SuperAdminAuth::class)->name('not-acces');
