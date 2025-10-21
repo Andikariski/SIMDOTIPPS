@@ -42,21 +42,30 @@
             </li>
             @if (Auth()->user()->is_admin == 1)
             <li class="sidebar-nav-item">
-                <a wire:navigate href="{{ route('operator') }}"
-                    class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('operator') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
+                <a wire:navigate href="{{ route('superadmin.operator') }}"
+                    class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('superadmin.operator') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
                     :class="{ 'justify-content-center': sidebarCollapsed }">
                     <i
-                        class="bi bi-pc-display-horizontal {{ request()->routeIs('operator') ? 'text-light' : 'text-dark' }}"></i>
+                        class="bi bi-pc-display-horizontal {{ request()->routeIs('superadmin.operator') ? 'text-light' : 'text-dark' }}"></i>
                     <span x-show="!sidebarCollapsed">Operator</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a wire:navigate href="{{ route('opd') }}"
-                    class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('opd') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
+                <a wire:navigate href="{{ route('superadmin.opd') }}"
+                    class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('superadmin.opd') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
                     :class="{ 'justify-content-center': sidebarCollapsed }">
                     <i
-                        class="bi bi-diagram-2 {{ request()->routeIs('opd') ? 'text-light' : 'text-dark' }}"></i>
+                        class="bi bi-diagram-2 {{ request()->routeIs('superadmin.opd') ? 'text-light' : 'text-dark' }}"></i>
                     <span x-show="!sidebarCollapsed">Data OPD</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a wire:navigate href="{{ route('superadmin.pagu') }}"
+                    class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('superadmin.pagu') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
+                    :class="{ 'justify-content-center': sidebarCollapsed }">
+                    <i
+                        class="bi bi-diagram-2 {{ request()->routeIs('superadmin.pagu') ? 'text-light' : 'text-dark' }}"></i>
+                    <span x-show="!sidebarCollapsed">Data Pagu</span>
                 </a>
             </li>
             {{-- <li class="nav-item">

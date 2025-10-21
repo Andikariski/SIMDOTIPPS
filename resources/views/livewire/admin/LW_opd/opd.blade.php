@@ -1,7 +1,7 @@
 <div>
      @php
         $breadcrumbs = [
-            ['name' => 'Daftar OPD', 'url' => route('dashboard')],
+            ['name' => 'Daftar OPD', 'url' => route('superadmin.opd')],
             // ['name' => 'Artikel', 'url' => route('admin.posts.index')],
         ];
     @endphp
@@ -9,7 +9,6 @@
     <div class="">
         <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
             <input type="text" placeholder="Cari Nama OPD.." wire:model.live="search" class="form-control w-25 rounded-1">
-        
             <button type="button" class="btn btn-primary w-20" wire:click="openTambahModal">
                 <i class="bi bi-plus-lg"></i> Tambah OPD
             </button>
@@ -29,7 +28,7 @@
                 @forelse ($opds as $opd)
                     <tr>
                         <td class="px-4 py-1 text-dark">{{ $loop->iteration }}</td> <!-- Nomor urut -->
-                        <td class="px-4 py-1 text-dark">{{ $opd->nama_opd }}</td>
+                        <td class="px-4 py-1 text-dark">{{ Str::limit(strip_tags($opd->nama_opd), 60) }}</td>
                         {{-- <td class="px-4 py-1 text-dark">{{ $opd->alamat_opd }}</td> --}}
                         <td class="px-4 py-1 text-dark">{{ $opd->kode_opd }}</td>
 
@@ -48,7 +47,7 @@
                                 </button>
 
                                 <!-- Tombol Hapus -->
-                                <button wire:click="$dispatch('confirm-delete-data-pegawai', {{ $opd }})"
+                                <button wire:click="$dispatch('confirm-delete-data-opd', {{ $opd }})"
                                     class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1">
                                     <i class="bi bi-trash3"></i>
                                     {{-- <span>Hapus</span> --}}
@@ -67,42 +66,6 @@
                 @endforelse
             </tbody>
         </table>
- 
-        <!-- Modal Bootstrap -->
-        <div wire:ignore.self class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Hapus Artikel</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        {{-- @if ($selectedPostId)
-                            <p>Yakin ingin menghapus artikel <strong>{{ $selectedPostTitle }}</strong>?</p>
-                        @else --}}
-                            <div class="d-flex flex-column align-items-center justify-content-center">
-                                <div class="spinner-border spinner-border-sm text-dark" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <p class="fs-5">memuat data...</p>
-                            </div>
-                        {{-- @endif --}}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-                        <button wire:click="delete"
-                            class="btn btn-danger d-flex align-items-center justify-content-center gap-1">
-                            <div wire:loading="delete" class="spinner-border spinner-border-sm text-white"
-                                role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                            <span wire:loading.remove="delete">Hapus Artikel</span>
-                            <span wire:loading="delete">Menghapus...</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="mt-4">

@@ -7,7 +7,7 @@
     class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
     style="background-color: rgba(0, 0, 0, 0.5); z-index: 1050; display: none; z-index: 1060;" {{ $attributes }}>
 
-    <div class="{{ $size }} mb-6" x-transition:enter="transition ease-out duration-300"
+    <div class="{{ $size }} mb-4" x-transition:enter="transition ease-out duration-300"
         x-transition:enter-start="opacity-0 transform scale-75" x-transition:enter-end="opacity-100 transform scale-100"
         x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100"
         x-transition:leave-end="opacity-0 transform scale-75" style="max-width: 550px; width: 100%;">

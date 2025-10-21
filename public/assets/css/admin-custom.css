@@ -405,3 +405,7 @@ body {
 body.modal-open {
     overflow: hidden;
 }
+
+.btn-danger {
+    color: #dc3545;
+}

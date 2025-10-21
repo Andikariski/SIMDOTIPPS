@@ -1,7 +1,7 @@
 <div>
      @php
         $breadcrumbs = [
-            ['name' => 'Daftar Operator', 'url' => route('operator')],
+            ['name' => 'Daftar Operator', 'url' => route('superadmin.operator')],
             // ['name' => 'Detail Operator', 'url' => route('operator')],
         ];
     @endphp
@@ -13,15 +13,17 @@
             <button type="button" class="btn btn-primary w-20" wire:click="openTambahModal">
                 <i class="bi bi-plus-lg"></i> Tambah Operator
             </button>
+
         </div>
-        <div  iv class="rounded-1 overflow-hidden border p-0">
+        <div class="rounded-1 overflow-hidden border p-0">
+        <div  class="table-responsive">
         <table class="table table-striped align-middle mb-0">
             <thead class="table-secondary">
                 <tr>
                     <th class="px-4 py-2 text-dark">No</th>
                     <th class="px-4 py-2 text-dark">Nama Operator</th>
-                    {{-- <th class="px-4 py-2 text-dark">Alamat OPD</th> --}}
                     <th class="px-4 py-2 text-dark">Instansi</th>
+                    <th class="px-4 py-2 text-dark">Kontak</th>
                     <th class="px-4 py-2 text-dark">Aksi</th>
                 </tr>
             </thead>
@@ -30,8 +32,8 @@
                     <tr>
                         <td class="px-4 py-1 text-dark">{{ $loop->iteration }}</td> <!-- Nomor urut -->
                         <td class="px-4 py-1 text-dark">{{ $operator->name }}</td>
-                        {{-- <td class="px-4 py-1 text-dark">{{ $opd->alamat_opd }}</td> --}}
-                        <td class="px-4 py-1 text-dark">{{ $operator->opd->nama_opd }}</td>
+                        <td class="px-4 py-1 text-dark">{{  Str::limit(strip_tags($operator->opd->nama_opd), 100) }}</td>
+                        <td class="px-4 py-1 text-dark">{{ $operator->kontak }}</td>
 
                          <td class="px-4 py-1 d-flex gap-2">
                                 <!-- Tombol Edit -->
@@ -42,13 +44,13 @@
                                 </button>
                                 <!-- Tombol Edit -->
                                 <button wire:click="openDetailModal({{ $operator->id }})"
-                                    class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
+                                    class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1" disabled>
                                     <i class="bi bi-eye"></i>
                                     {{-- <span>Detail</span> --}}
                                 </button>
 
                                 <!-- Tombol Hapus -->
-                                <button wire:click="$dispatch('confirm-delete-data-pegawai', {{ $operator }})"
+                                <button wire:click="$dispatch('confirm-delete-data-operator', {{ $operator }})"
                                     class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1">
                                     <i class="bi bi-trash3"></i>
                                     {{-- <span>Hapus</span> --}}
@@ -67,41 +69,6 @@
                 @endforelse
             </tbody>
         </table>
- 
-        <!-- Modal Bootstrap -->
-        <div wire:ignore.self class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Hapus Artikel</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        {{-- @if ($selectedPostId)
-                            <p>Yakin ingin menghapus artikel <strong>{{ $selectedPostTitle }}</strong>?</p>
-                        @else --}}
-                            <div class="d-flex flex-column align-items-center justify-content-center">
-                                <div class="spinner-border spinner-border-sm text-dark" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <p class="fs-5">memuat data...</p>
-                            </div>
-                        {{-- @endif --}}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-                        <button wire:click="delete"
-                            class="btn btn-danger d-flex align-items-center justify-content-center gap-1">
-                            <div wire:loading="delete" class="spinner-border spinner-border-sm text-white"
-                                role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                            <span wire:loading.remove="delete">Hapus Artikel</span>
-                            <span wire:loading="delete">Menghapus...</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -110,7 +77,7 @@
     </div>
 </div>
 
-{{-- @if ($this->showModal)
+    @if ($this->showModal)
         <x-modal :title="$modalTitle" :closeble="true" @click.self="$wire.closeModal()"
             @keydown.escape.window="$wire.closeModal()">
 
@@ -122,31 +89,53 @@
             <form wire:submit.prevent="simpan">
                 <div class="mb-3">
                     <label for="nip" class="form-label">
-                        Nama OPD
+                        Nama Operator
                     </label>
-                    <input type="text" class="form-control @error('namaOpd') is-invalid @enderror" id="nama_opd"
-                        wire:model="namaOpd" placeholder="Masukkan nama OPD..." maxlength="255">
-                    @error('namaOpd')
+                    <input type="text" class="form-control @error('namaOperator') is-invalid @enderror" id="nama_opd"
+                        wire:model="namaOperator" placeholder="Masukkan nama Operator..." maxlength="255">
+                    @error('namaOperator')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label for="nip" class="form-label">
-                        Kode OPD
+                        Email Operator
                     </label>
-                    <input type="text" class="form-control @error('kodeOpd') is-invalid @enderror" id="kode_opd"
-                        wire:model="kodeOpd" placeholder="Masukkan Kode OPD..." maxlength="255">
-                    @error('kodeOpd')
+                    <input type="text" class="form-control @error('emailOperator') is-invalid @enderror" id="kode_opd"
+                        wire:model="emailOperator" placeholder="Masukkan Email Operator..." maxlength="255">
+                    @error('emailOperator')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label for="nip" class="form-label">
-                        Alamat OPD
+                        Password
                     </label>
-                    <input type="text" class="form-control @error('alamatOpd') is-invalid @enderror" id="alamat_opd"
-                        wire:model="alamatOpd" placeholder="Masukkan Alamat OPD..." maxlength="255">
-                    @error('alamatOpd')
+                    <input type="text" class="form-control @error('passwordOperator') is-invalid @enderror" id="kode_opd"
+                        wire:model="passwordOperator" placeholder="Masukkan Email Operator..." maxlength="255">
+                    @error('passwordOperator')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="nip" class="form-label">
+                        Kontak Operator
+                    </label>
+                    <input type="text" class="form-control @error('kontakOperator') is-invalid @enderror" id="alamat_opd"
+                        wire:model="kontakOperator" placeholder="Masukkan Alamat OPD..." maxlength="255">
+                    @error('kontakOperator')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="opd" class="form-label">Instansi OPD</label>
+                        <select id="opd" class="form-control" wire:model="opd">
+                            <option value="">-- Pilih Instansi --</option>
+                            @foreach ($opds as $opd)
+                                <option value="{{ $opd->id }}">{{ $opd->nama_opd }}</option>
+                            @endforeach
+                        </select>
+                    @error('opd')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
@@ -169,7 +158,7 @@
                 </div>
             </x-slot>
         </x-modal>
-    @endif --}}
+    @endif 
 
     {{-- @if ($this->showDetailModal)
         <x-modal :title="$modalTitle" :closeble="true" @click.self="$wire.closeModal()"

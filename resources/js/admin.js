@@ -33,7 +33,7 @@ document.addEventListener("livewire:init", () => {
         }, 2500);
     });
 
-    // Notifikasi Berhasil Tambah Data OPD
+    // Notifikasi Berhasil Tambah Data All Global
     Livewire.on("success-add-data", (data) => {
         Toast.fire({
             icon: "success",
@@ -41,6 +41,15 @@ document.addEventListener("livewire:init", () => {
         });
     });
 
+    // Notifikasi Berhasil Hapus Data All Global
+    Livewire.on("success-delete-data", (data) => {
+        Toast.fire({
+            icon: "success",
+            title: data.message,
+        });
+    });
+
+    // Notifikasi Gagal Hapus Data All Global
     Livewire.on("failed-delete-data", (data) => {
         Toast.fire({
             icon: "error",
@@ -49,7 +58,7 @@ document.addEventListener("livewire:init", () => {
     });
 
     //sweetalert data hapus OPD
-    Livewire.on("confirm-delete-data-pegawai", (data) => {
+    Livewire.on("confirm-delete-data-opd", (data) => {
         Swal2.fire({
             icon: "question",
             title:
@@ -58,7 +67,7 @@ document.addEventListener("livewire:init", () => {
                 "</strong> ?",
             showCancelButton: true,
             cancelButtonText: "Batal",
-            confirmButtonText: "Ya, hapus permanen",
+            confirmButtonText: "Ya, Hapus Permanen",
             footer: '<strong class="text-danger">Data OPD yang di hapus tidak akan bisa dikembalikan!</strong>',
         }).then((result) => {
             if (result.isConfirmed) {
@@ -69,13 +78,28 @@ document.addEventListener("livewire:init", () => {
         });
     });
 
-    // Notifikasi Berhasil Hapus Data OPD
-    Livewire.on("success-delete-data", (data) => {
-        Toast.fire({
-            icon: "success",
-            title: data.message,
+    //sweetalert data hapus Operator
+    Livewire.on("confirm-delete-data-operator", (data) => {
+        Swal2.fire({
+            icon: "question",
+            title:
+                "Yakin ingin menghapus <strong class='text-primary'>" +
+                data["name"] +
+                "</strong> ?" +
+                "Dari Operator",
+            showCancelButton: true,
+            cancelButtonText: "Batal",
+            confirmButtonText: "Ya, Hapus Permanen",
+            footer: '<strong class="text-danger">Data Operator yang di hapus tidak akan bisa dikembalikan!</strong>',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch("delete-data-operator", {
+                    id: data["id"],
+                });
+            }
         });
     });
+
     Livewire.on("success-edit-data", (data) => {
         Toast.fire({
             icon: "success",
