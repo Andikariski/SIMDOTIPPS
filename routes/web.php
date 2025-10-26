@@ -5,6 +5,7 @@ use App\Livewire\Admin\LWsubKegiatan\SubKegiatan;
 use App\Livewire\Admin\LWopd\Opd;
 use App\Livewire\Admin\LWoperator\Operator;
 use App\Livewire\Admin\LWpagu\Pagu;
+use App\Livewire\Admin\LWpagu\PaguIndukDefinitif;
 use App\Livewire\Admin\LWrap\Rap;
 use App\Livewire\Admin\SuperAdminAuth;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,8 @@ Route::middleware(['auth'])->group(function () {
     // Route SuperAdmin
     Route::get('/opd', Opd::class)->name('superadmin.opd');
     Route::get('/operator', Operator::class)->name('superadmin.operator');
-    Route::get('/pagu', Pagu::class)->name('superadmin.pagu');
+    Route::get('/pagu', Pagu::class)->name('superadmin.pagu.opd');
+    Route::get('/pagu-induk', PaguIndukDefinitif::class)->name('superadmin.pagu.induk');
 
     //Route untuk Akses Super Admin / Bukan
     Route::get('/not-acces', SuperAdminAuth::class)->name('not-acces');

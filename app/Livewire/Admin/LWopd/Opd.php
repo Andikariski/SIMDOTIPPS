@@ -135,6 +135,7 @@ class Opd extends AdminSuperAdminAuth
         $opd = ModelsOpd::query()
         // ->with('')
         ->where('nama_opd', 'like', "%{$this->search}%")
+        ->orWhere('kode_opd', 'like', "%{$this->search}%")
         ->latest()
         ->paginate(7);
         return view('livewire.admin.LW_opd.opd',['opds'=>$opd]);

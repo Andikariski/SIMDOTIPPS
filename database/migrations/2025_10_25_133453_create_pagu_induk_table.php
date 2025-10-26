@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_pagu', function (Blueprint $table) {
+        Schema::create('tbl_pagu_induk', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('fkid_opd');
             $table->bigInteger('pagu_SG')->default(0);
             $table->bigInteger('pagu_BG')->default(0);
             $table->bigInteger('pagu_DTI')->default(0);
             $table->year('tahun_pagu');
             $table->timestamps();
-
-            $table->foreign('fkid_opd')->references('id')->on('tbl_opd')->onDelete('cascade');
         });
     }
 
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tbl_pagu');
+        Schema::dropIfExists('tbl_pagu_induk');
     }
 };

@@ -1,6 +1,7 @@
 import * as bootstrap from "bootstrap";
 import Swal from "sweetalert2";
 import ApexCharts from "apexcharts";
+window.bootstrap = bootstrap;
 
 // Setup Toast sekali saja
 const Toast = Swal.mixin({
@@ -20,9 +21,18 @@ const Swal2 = Swal.mixin({
     buttonsStyling: false,
 });
 
-window.bootstrap = bootstrap;
+// function initSelect2() {
+//     $("#opd").select2({
+//         width: "50%",
+//     });
+// }
+
 document.addEventListener("livewire:init", () => {
-    // SweetAlert Login
+    // initSelect2();
+    // Livewire.hook("message.processed", (message, component) => {
+    //     initSelect2();
+    // });
+
     Livewire.on("success-login", (data) => {
         Toast.fire({
             icon: "success",
@@ -53,6 +63,14 @@ document.addEventListener("livewire:init", () => {
     Livewire.on("failed-delete-data", (data) => {
         Toast.fire({
             icon: "error",
+            title: data.message,
+        });
+    });
+
+    // Notifikasi Buka Kunci
+    Livewire.on("succes-change", (data) => {
+        Toast.fire({
+            icon: "success",
             title: data.message,
         });
     });
@@ -94,6 +112,48 @@ document.addEventListener("livewire:init", () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 Livewire.dispatch("delete-data-operator", {
+                    id: data["id"],
+                });
+            }
+        });
+    });
+
+    //sweetalert data hapus Pagu OPD
+    Livewire.on("confirm-delete-data-paguOPD", (data) => {
+        Swal2.fire({
+            icon: "question",
+            title:
+                "Yakin ingin menghapus pagu <strong class='text-primary'>" +
+                data["opd"]["kode_opd"] +
+                "</strong> ?",
+            showCancelButton: true,
+            cancelButtonText: "Batal",
+            confirmButtonText: "Ya, Hapus Permanen",
+            footer: '<strong class="text-danger">Data Pagu yang di hapus tidak akan bisa dikembalikan!</strong>',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch("delete-data-paguOPD", {
+                    id: data["id"],
+                });
+            }
+        });
+    });
+
+    //sweetalert data hapus Pagu Induk
+    Livewire.on("confirm-delete-data-paguInduk", (data) => {
+        Swal2.fire({
+            icon: "question",
+            title:
+                "Yakin ingin menghapus pagu <strong class='text-primary'>" +
+                data["tahun_pagu"] +
+                "</strong> ?",
+            showCancelButton: true,
+            cancelButtonText: "Batal",
+            confirmButtonText: "Ya, Hapus Permanen",
+            footer: '<strong class="text-danger">Data Pagu yang di hapus tidak akan bisa dikembalikan!</strong>',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch("delete-data-paguInduk", {
                     id: data["id"],
                 });
             }

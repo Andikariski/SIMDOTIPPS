@@ -1,7 +1,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>SIMDOTI PPS</title>
+<title>SERAP PPS</title>
 
 <link rel="icon" href="{{ asset('assets/img/simdoti.PNG') }}">
 

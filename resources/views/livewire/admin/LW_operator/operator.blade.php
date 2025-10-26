@@ -43,11 +43,10 @@
                                     {{-- <span>Edit</span> --}}
                                 </button>
                                 <!-- Tombol Edit -->
-                                <button wire:click="openDetailModal({{ $operator->id }})"
+                                {{-- <button wire:click="openDetailModal({{ $operator->id }})"
                                     class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1" disabled>
                                     <i class="bi bi-eye"></i>
-                                    {{-- <span>Detail</span> --}}
-                                </button>
+                                </button> --}}
 
                                 <!-- Tombol Hapus -->
                                 <button wire:click="$dispatch('confirm-delete-data-operator', {{ $operator }})"

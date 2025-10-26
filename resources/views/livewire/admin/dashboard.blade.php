@@ -8,7 +8,13 @@
           <i class="bi bi-cash-coin text-light me-3" style="font-size: 60px;"></i>
           <div class="text-start">
             <h6 class="fw-semibold text-light">Dana Otsus BG</h6>
-            <h5 class="fw-bold text-light mb-0">121.000.000.000</h5>
+              @if(auth()->user()->is_admin == 1 || $paguOPD == null )
+                <span class="badge bg-danger">Pagu belum ada</span>
+              @else
+                <h5 class="fw-bold text-light">
+                  {{ number_format($paguOPD['pagu_BG']) }}
+              </h5>
+              @endif
           </div>
         </div>
       </div>
@@ -21,7 +27,13 @@
           <i class="bi bi-cash-coin text-light me-3" style="font-size: 60px;"></i>
           <div class="text-start">
             <h6 class="fw-semibold text-light">Dana Otsus SG</h6>
-            <h5 class="fw-bold text-light mb-0">124.000.000.000</h5>
+              @if(auth()->user()->is_admin == 1 || $paguOPD == null )
+                <span class="badge bg-danger">Pagu Belum ada</span>
+              @else
+                <h5 class="fw-bold text-light">
+                  {{ number_format($paguOPD['pagu_SG']) }}
+              </h5>
+              @endif
           </div>
         </div>
       </div>
@@ -33,8 +45,14 @@
         <div class="card-body d-flex align-items-center">
           <i class="bi bi-cash-coin text-light me-3" style="font-size: 60px;"></i>
           <div class="text-start">
-            <h6 class="fw-semibold text-light">Dana DTI</h6>
-            <h5 class="fw-bold text-light mb-0">126.000.000.000</h5>
+            <h6 class="fw-semibold text-light">Dana Otsus DTI</h6>
+              @if(auth()->user()->is_admin == 1 || $paguOPD == null )
+                <span class="badge bg-danger">Pagu Belum ada</span>
+              @else
+                <h5 class="fw-bold text-light">
+                  {{ number_format($paguOPD['pagu_DTI']) }}
+              </h5>
+              @endif
           </div>
         </div>
       </div>
@@ -46,8 +64,8 @@
         <div class="card-body d-flex align-items-center">
          <i class="bi bi-calendar-check-fill text-light me-3" style="font-size: 60px;"></i>
           <div class="text-start">
-            <h6 class="fw-semibold text-light">Kegiatan Berjalan</h6>
-            <h5 class="fw-bold text-light mb-0">10</h5>
+            <h6 class="fw-semibold text-light">Dana SiLPA</h6>
+            <h5 class="fw-bold text-light mb-0">100.000.000</h5>
           </div>
         </div>
       </div>

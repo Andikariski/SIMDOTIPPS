@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
                 'alamat_opd' => 'Papua Selatan'
             ],
             [
-                'nama_opd' => 'Dinas Administrasi Kependudukan Dan Pencatatan Sioil, Pemberdayaan Masyarakat Dan Kampung',
+                'nama_opd' => 'Dinas Administrasi Kependudukan Dan Pencatatan Sipil, Pemberdayaan Masyarakat Dan Kampung',
                 'kode_opd' => 'DUKCAPIL',
                 'alamat_opd' => 'Papua Selatan'
             ],
@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
                 'alamat_opd' => 'Papua Selatan'
             ],
             [
-                'nama_opd' => 'Badan Keegawaian Dan Pengembangan Sumber Daya Manusia', 
+                'nama_opd' => 'Badan Kepegawaian Dan Pengembangan Sumber Daya Manusia', 
                 'kode_opd' => 'BKPSDM',
                 'alamat_opd' => 'Papua Selatan'
             ],
