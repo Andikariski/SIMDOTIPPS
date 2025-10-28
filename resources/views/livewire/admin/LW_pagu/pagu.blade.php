@@ -1,7 +1,7 @@
 <div>
      @php
         $breadcrumbs = [
-            ['name' => 'Pagu OPD', 'url' => route('superadmin.opd')],
+            ['name' => 'Alokasi Pagu OPD', 'url' => route('superadmin.opd')],
             // ['name' => 'Artikel', 'url' => route('admin.posts.index')],
         ];
     @endphp
@@ -45,7 +45,8 @@
             <div class="col-3">
                 <div class="card-body">
                     <h5 class="card-title">Dana SiLPA</h5>
-                    <h3 class="fw-bold">XXX.000.000.000</h3>
+                    <span class="badge bg-danger">-</span>
+                    {{-- <h3 class="fw-bold">XXX.000.000.000</h3> --}}
                     <p class="mb-0">Tahun Anggaran 2025</p>
                 </div>
             </div>
@@ -143,7 +144,7 @@
 
 @if ($this->showModal)
         <x-modal :title="$modalTitle" :closeble="true" @click.self="$wire.closeModal()"
-            @keydown.escape.window="$wire.closeModal()">
+            @keydown.escape.window="$wire.closeModal()" >
             <x-slot name="closeButton">
                 <button type="button" class="btn-close" aria-label="Close" wire:click="closeModal">
                 </button>
@@ -204,7 +205,7 @@
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-danger" wire:click="closeModal">
                         <span wire:loading.remove wire:target="closeModal">Batal</span>
-                        <span wire:loading wire:target="closeModal">tunggu...</span>
+                        <span wire:loading wire:target="closeModal">Tunggu...</span>
                     </button>
                     <button type="button" class="btn btn-primary" wire:click="simpan" wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="simpan">
@@ -262,7 +263,7 @@
                 <div class="d-flex gap-2">
                     <button type="button" class="btn btn-danger" wire:click="closeModal">
                         <span wire:loading.remove wire:target="closeModal">Tutup</span>
-                        <span wire:loading wire:target="closeModal">tunggu...</span>
+                        <span wire:loading wire:target="closeModal">Tunggu...</span>
                     </button>
                 </div>
             </x-slot>

@@ -29,7 +29,9 @@
                     <span class="fs-6" x-show="!sidebarCollapsed">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item">
+          
+            @if (Auth()->user()->is_admin == 1)
+              <li class="nav-item">
                 <a wire:navigate href="{{ route('subKegiatan') }}"
                     class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('subKegiatan') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
                     :class="{ 'justify-content-center': sidebarCollapsed }">
@@ -38,7 +40,6 @@
                     <span x-show="!sidebarCollapsed">Sub Kegiatan</span>
                 </a>
             </li>
-            @if (Auth()->user()->is_admin == 1)
             <li class="sidebar-nav-item">
                 <a wire:navigate href="{{ route('superadmin.operator') }}"
                     class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('superadmin.operator') ? 'bg-primary text-light' : 'bg-white text-dark' }}"

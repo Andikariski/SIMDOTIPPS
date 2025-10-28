@@ -40,7 +40,7 @@ document.addEventListener("livewire:init", () => {
         });
         setTimeout(() => {
             window.location.href = "/dashboard";
-        }, 2500);
+        }, 2000);
     });
 
     // Notifikasi Berhasil Tambah Data All Global
@@ -154,6 +154,27 @@ document.addEventListener("livewire:init", () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 Livewire.dispatch("delete-data-paguInduk", {
+                    id: data["id"],
+                });
+            }
+        });
+    });
+
+    //sweetalert data hapus subKegiatan
+    Livewire.on("confirm-delete-data-subKegiatan", (data) => {
+        Swal2.fire({
+            icon: "question",
+            title:
+                "Yakin ingin menghapus sub kegiatan <strong class='text-primary'>" +
+                data["kode_klasifikasi"] +
+                "</strong> ?",
+            showCancelButton: true,
+            cancelButtonText: "Batal",
+            confirmButtonText: "Ya, Hapus Permanen",
+            footer: '<strong class="text-danger">Data sub kegiatan yang di hapus tidak akan bisa dikembalikan!</strong>',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch("delete-data-subKegiatan", {
                     id: data["id"],
                 });
             }

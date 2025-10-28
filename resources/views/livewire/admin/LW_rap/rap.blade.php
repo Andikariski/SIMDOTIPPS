@@ -65,7 +65,7 @@
             </div>
             <div class="col-md-6 d-flex justify-content-end">
                 <button type="button" class="btn btn-primary me-2" wire:click="openTambahModal">
-                    <i class="bi bi-plus-lg"></i> Input Pagu Induk
+                    <i class="bi bi-plus-lg"></i> Input RAP
                 </button>
             @if ($status === 'Buka')
                 <button wire:click="toggleStatus" wire:loading.attr="disabled"
@@ -90,11 +90,11 @@
                 <thead class="table-secondary">
                     <tr>
                         <th class="px-4 py-2 text-dark">No</th>
-                        <th class="px-4 py-2 text-dark">Tahun Pagu</th>
-                        <th class="px-4 py-2 text-dark">Pagu BG</th>
-                        <th class="px-4 py-2 text-dark">Pagu SG</th>
-                        <th class="px-4 py-2 text-dark">Pagu DTI</th>
-                        <th class="px-4 py-2 text-dark">Total</th>
+                        <th class="px-4 py-2 text-dark">Kode Klasifikasi</th>
+                        <th class="px-4 py-2 text-dark">Sub Kegiatan</th>
+                        <th class="px-4 py-2 text-dark">Pagu</th>
+                        <th class="px-4 py-2 text-dark">Sumber Dana</th>
+                        <th class="px-4 py-2 text-dark">Opd</th>
                         <th class="px-4 py-2 text-dark">Aksi</th>
                     </tr>
                 </thead>
@@ -131,19 +131,19 @@
                         <td colspan="7" class="px-4 py-5 text-center">
                             <div class="d-inline-flex flex-column align-items-center justify-content-center">
                                 <i class="bi bi-emoji-tear text-warning" style="font-size: 60px"></i>
-                                <span class="fs-5 text-dark">Pagu Belum diInput!</span>
+                                <span class="fs-5 text-dark">RAP Belum diInput!</span>
                             </div>
                         </td>
                     </tr>
                 {{-- @endforelse --}}
             </tbody>
             </table>
-            {{-- <select id="opd" class="form-control" wire:model="idOpd">
-                <option value="">-- Pilih Instansi --</option>
-                @foreach ($opds as $opd)
-                    <option value="{{ $opd->id }}">{{ $opd->nama_opd }}</option>
-                @endforeach
-            </select> --}}
+            <select id="kegiatan" class="form-control select2" wire:model="idOpd">
+                <option value="">-- Pilih Sub Kegiatan --</option>
+                   @foreach ($pilihSub as $kegiatan)
+                       <option value="{{ $kegiatan->id }}">{{ $kegiatan->sub_kegiatan }}</option>
+                   @endforeach
+            </select>
         </div>    
     </div>   
      <div class="mt-4">
@@ -274,11 +274,12 @@
         </x-modal>
     @endif --}}
 </div>
-{{-- 
+
+
 <script>
-    $('#opd').select2({
+    $('#kegiatan').select2({
         width: '50%'
-    });         
-</script> --}}
+    })
+</script>
 
 
