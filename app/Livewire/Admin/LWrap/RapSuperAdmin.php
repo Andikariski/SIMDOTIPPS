@@ -7,16 +7,20 @@ use App\Models\SubKegiatan;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Auth;
 
 use App\Livewire\Admin\SuperAdminAuth as AdminSuperAdminAuth;
 
 
-class Rap extends Component
+class RapSuperAdmin extends Component
 {
     public $status;
 
     public function mount()
     {
+        if (!Auth::check() || Auth::user()->is_admin != 1) {
+             abort(404);
+        }
         $this->loadStatus();
     }
 
@@ -46,6 +50,6 @@ class Rap extends Component
     public function render()
     {
         $pilihSub = SubKegiatan::all();
-        return view('livewire.admin.LW_rap.rap',compact('pilihSub'));
+        return view('livewire.admin.LW_rap.rap-super-admin',compact('pilihSub'));
     }
 }

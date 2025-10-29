@@ -29,6 +29,18 @@
                     <span class="fs-6" x-show="!sidebarCollapsed">Dashboard</span>
                 </a>
             </li>
+
+            @if (Auth()->user()->is_admin == 0)
+                <li class="nav-item">
+                <a wire:navigate href="{{ route('rap.index') }}"
+                    class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('rap.*') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
+                    :class="{ 'justify-content-center': sidebarCollapsed }">
+                    <i
+                        class="bi bi-wallet {{ request()->routeIs('rap.*') ? 'text-light' : 'text-dark' }}"></i>
+                    <span x-show="!sidebarCollapsed">RAP Opd</span>
+                </a>
+            </li>
+            @endif
           
             @if (Auth()->user()->is_admin == 1)
               <li class="nav-item">
@@ -59,12 +71,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a wire:navigate href="{{ route('rap') }}"
-                    class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('rap') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
+                <a wire:navigate href="{{ route('superadmin.rap') }}"
+                    class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('superadmin.rap') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
                     :class="{ 'justify-content-center': sidebarCollapsed }">
                     <i
-                        class="bi bi-wallet {{ request()->routeIs('rap') ? 'text-light' : 'text-dark' }}"></i>
-                    <span x-show="!sidebarCollapsed">RAP</span>
+                        class="bi bi-wallet {{ request()->routeIs('superadmin.rap') ? 'text-light' : 'text-dark' }}"></i>
+                    <span x-show="!sidebarCollapsed">RAP Induk</span>
                 </a>
             </li>
             {{-- <li class="nav-item">

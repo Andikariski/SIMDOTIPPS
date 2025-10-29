@@ -89,7 +89,7 @@
                 <button type="button" class="btn-close" aria-label="Close" wire:click="closeModal">
                 </button>
             </x-slot>
-
+            <hr>
             <form wire:submit.prevent="simpan">
                 <div class="row">
                     <div class="col-6">

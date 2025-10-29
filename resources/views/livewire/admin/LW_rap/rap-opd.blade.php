@@ -1,7 +1,7 @@
 <div>
      @php
         $breadcrumbs = [
-            ['name' => 'Rap', 'url' => route('superadmin.pagu.induk')],
+            ['name' => 'Data RAP', 'url' => route('superadmin.pagu.induk')],
             // ['name' => 'Artikel', 'url' => route('admin.posts.index')],
         ];
     @endphp
@@ -41,12 +41,14 @@
     </div> --}}
     @if ($status === 'Buka')
         <div class="alert alert-success  alert-dismissible fade show" role="alert">
-            <strong>Selamat Bekerja,</strong> Akses perubahan RAP sudah dibuka.
+            <i class="bi bi-exclamation-diamond" style="font-size: 20px; color:rgb(0, 185, 46)"></i>
+            <strong> TERBUKA, </strong> Akses perubahan RAP sudah terbuka, silakan lakukan perubahan.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @elseif($status === 'Tutup')    
         <div class="alert alert-danger  alert-dismissible fade show" role="alert">
-            <strong>Mohon Maaf,</strong> Akses perubahan RAP masih belum dibuka.
+            <i class="bi bi-exclamation-diamond" style="font-size: 20px; color:rgb(208, 0, 0)"></i>
+            <strong> TERKUNCI, </strong> Akses perubahan RAP masih terkunci, anda tidak dapat melakukan perubahan.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
@@ -63,28 +65,21 @@
                     @endforeach --}}
             </select>
             </div>
-            <div class="col-md-6 d-flex justify-content-end">
-                <button type="button" class="btn btn-primary me-2" wire:click="openTambahModal">
+            <div class="col-md-2 d-flex justify-content-end">
+                {{-- <button type="button" class="btn btn-primary" wire:click="redirectToCreate" {{ $status === 'Buka' ? '' : 'disabled' }} wire:navigate>
                     <i class="bi bi-plus-lg"></i> Input RAP
-                </button>
-            @if ($status === 'Buka')
-                <button wire:click="toggleStatus" wire:loading.attr="disabled"
-                    class="btn btn-danger d-flex align-items-center">
-                    <i class="bi bi-lock-fill me-2"></i>
-                    <span wire:loading.remove>Tutup Akses</span>
-                    <span wire:loading>Memproses...</span>
-                </button>
-            @else
-                <button wire:click="toggleStatus" wire:loading.attr="disabled"
-                    class="btn btn-success d-flex align-items-center">
-                    <i class="bi bi-unlock-fill me-2"></i>
-                    <span wire:loading.remove>Buka Akses</span>
-                    <span wire:loading>Memproses...</span>
-                </button>
-            @endif
+                </button> --}}
+                <a href="{{ route('rap.create') }}" class="btn btn-primary" wire:navigate {{ $status === 'Buka' ? '' : 'disabled' }}>
+                    <i class="bi bi-plus-lg"></i> Input RAP
+                </a>
+
+                {{-- <button type="button" class="btn btn-primary"
+                    onclick="@if($status === 'Buka') window.Livewire.navigate('{{ route('rap.create') }}') @else Swal2.fire({icon:'error', title:'Akses terkunci!', showConfirmButton:false, timer:2000}) @endif">
+                <i class="bi bi-plus-lg me-1"></i> Input RAP
+                </button> --}}
+
             </div>
         </div>
-
         <div class="rounded-1 overflow-hidden border p-0 table-responsive" >
             <table class="table table-striped align-middle mb-0">
                 <thead class="table-secondary">
@@ -134,16 +129,16 @@
                                 <span class="fs-5 text-dark">RAP Belum diInput!</span>
                             </div>
                         </td>
-                    </tr>
+                    </tr>   
                 {{-- @endforelse --}}
             </tbody>
             </table>
-            <select id="kegiatan" class="form-control select2" wire:model="idOpd">
+            {{-- <select id="kegiatan" class="form-control select2" wire:model="idOpd">
                 <option value="">-- Pilih Sub Kegiatan --</option>
                    @foreach ($pilihSub as $kegiatan)
                        <option value="{{ $kegiatan->id }}">{{ $kegiatan->sub_kegiatan }}</option>
                    @endforeach
-            </select>
+            </select> --}}
         </div>    
     </div>   
      <div class="mt-4">

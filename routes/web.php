@@ -6,9 +6,12 @@ use App\Livewire\Admin\LWopd\Opd;
 use App\Livewire\Admin\LWoperator\Operator;
 use App\Livewire\Admin\LWpagu\Pagu;
 use App\Livewire\Admin\LWpagu\PaguIndukDefinitif;
-use App\Livewire\Admin\LWrap\Rap;
+use App\Livewire\Admin\LWrap\CreateRap;
+use App\Livewire\Admin\LWrap\RapOpd;
+use App\Livewire\Admin\LWrap\RapSuperAdmin;
 use App\Livewire\Admin\SuperAdminAuth;
 use Illuminate\Support\Facades\Route;
+
 use Livewire\Volt\Volt;
 
 Route::get('/', function () {
@@ -21,10 +24,13 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    Route::get('/rap', Rap::class)->name('rap');
     Route::get('/sub-Kegiatan', SubKegiatan::class)->name('subKegiatan');
 
+    Route::get('/rap-opd', RapOpd::class)->name('rap.index');
+    Route::get('/rap-opd/create', CreateRap::class)->name('rap.create');
+    
     // Route SuperAdmin
+    Route::get('/rap-super-admin', RapSuperAdmin::class)->name('superadmin.rap');
     Route::get('/opd', Opd::class)->name('superadmin.opd');
     Route::get('/operator', Operator::class)->name('superadmin.operator');
     Route::get('/pagu', Pagu::class)->name('superadmin.pagu.opd');
