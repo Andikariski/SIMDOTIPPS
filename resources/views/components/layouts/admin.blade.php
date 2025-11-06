@@ -18,9 +18,12 @@
             </main>
         </div>
     {{-- Scripts --}}
-   
+     
+    <!-- Jquery <head> -->
+    <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+    <!-- JS sebelum </body> -->
+    <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
     @stack('scripts') {{-- Tambahkan stack untuk JS khusus --}}
     @livewireScripts
 </body>
-
 </html>

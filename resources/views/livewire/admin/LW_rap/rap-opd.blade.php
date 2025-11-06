@@ -65,19 +65,16 @@
                     @endforeach --}}
             </select>
             </div>
-            <div class="col-md-2 d-flex justify-content-end">
-                {{-- <button type="button" class="btn btn-primary" wire:click="redirectToCreate" {{ $status === 'Buka' ? '' : 'disabled' }} wire:navigate>
-                    <i class="bi bi-plus-lg"></i> Input RAP
-                </button> --}}
-                <a href="{{ route('rap.create') }}" class="btn btn-primary" wire:navigate {{ $status === 'Buka' ? '' : 'disabled' }}>
-                    <i class="bi bi-plus-lg"></i> Input RAP
-                </a>
-
-                {{-- <button type="button" class="btn btn-primary"
-                    onclick="@if($status === 'Buka') window.Livewire.navigate('{{ route('rap.create') }}') @else Swal2.fire({icon:'error', title:'Akses terkunci!', showConfirmButton:false, timer:2000}) @endif">
-                <i class="bi bi-plus-lg me-1"></i> Input RAP
-                </button> --}}
-
+            <div class="col-md-6 d-flex justify-content-end">
+                @if($status === 'Buka')
+                    <a href="{{ route('rap.create') }}" class="btn btn-primary" wire:navigate>
+                        <i class="bi bi-plus-lg"></i> Input RAP
+                    </a>
+                @else
+                    <a class="btn btn-danger disabled-link">
+                        <i class="bi bi-plus-lg"></i> Input RAP
+                    </a>
+                @endif
             </div>
         </div>
         <div class="rounded-1 overflow-hidden border p-0 table-responsive" >

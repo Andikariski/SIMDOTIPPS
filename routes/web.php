@@ -21,6 +21,9 @@ Route::get('/', function () {
 // Route::view('dashboard', 'dashboard')
 //     ->middleware(['auth', 'verified'])
 //     ->name('dashboard');
+    // API get sub kegiatan dan aktivitas utama
+    Route::get('api/get-sub-kegiatan', [CreateRap::class,'searchSubKegiatan'])->name('api.sub-kegiatan');
+    Route::get('api/get-aktivitas-utama', [CreateRap::class,'searchAktivitasUtama'])->name('api.aktivitas-utama');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
@@ -38,6 +41,9 @@ Route::middleware(['auth'])->group(function () {
 
     //Route untuk Akses Super Admin / Bukan
     Route::get('/not-acces', SuperAdminAuth::class)->name('not-acces');
+
+
+
 
 
     Route::redirect('settings', 'settings/profile');

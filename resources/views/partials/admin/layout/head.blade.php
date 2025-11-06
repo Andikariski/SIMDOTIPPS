@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <link rel="icon" href="{{ asset('assets/img/simdoti.PNG') }}">
+    <link rel="icon" href="{{ asset('assets/img/simdoti.png') }}">
     <title>SERAP PPS | {{  $pageTitle  }}</title>
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -19,19 +19,16 @@
     <!-- Vendor CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/css/admin-custom.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
     <!-- CSS di <head> -->
     <link href="{{ asset('assets/select2/css/select2.min.css') }}" rel="stylesheet">
 
-    <!-- Jquery <head> -->
-    <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
 
-    <!-- JS sebelum </body> -->
-    <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
-
-
-    @vite(['resources/css/app.scss', 'resources/js/admin.js'])
     @stack('styles') {{-- Tambahkan stack untuk CSS khusus --}}
+    @vite(['resources/css/app.scss', 'resources/js/admin.js'])
     @livewireStyles
 </head>

@@ -13,7 +13,7 @@
         x-transition:leave-end="opacity-0 transform scale-75" style="max-width: 650px; width: 100%;">
 
         <div class="modal-content bg-white rounded shadow-sm p-4">
-            <!-- Modal Header -->
+            <!-- Modal Header -->   
             <div class="modal-header mb-3">
                 <h5 class="modal-title fw-bold">{{ $title }}</h5>
                 @if ($closable)

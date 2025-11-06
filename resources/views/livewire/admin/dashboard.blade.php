@@ -181,186 +181,122 @@
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.js"></script> --}}
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const danaAnggaran = [100, 150, 180, 100, 90, 120]; // contoh data (Miliar)
-  const danaDigunakan = [60, 90, 110, 85, 82, 90];   // contoh data (Miliar)
-  const penyerapanDana = [60, 90, 110, 85, 82, 90];   // contoh data (Miliar)
+  
+    /**
+     * @description Menginisialisasi chart menggunakan data yang diberikan.
+     */
+    function initializeChart() {
+        const danaAnggaran = [100, 150, 180, 100, 90, 120]; // contoh data (Miliar)
+        const danaDigunakan = [60, 90, 110, 85, 82, 90];   // contoh data (Miliar)
+        // const penyerapanDana = [60, 90, 110, 85, 82, 90]; // contoh data (%)
 
-  const maxDana = Math.ceil(Math.max(...danaAnggaran, ...danaDigunakan) / 10) * 10 + 10;
+        // Menghitung nilai maksimum untuk sumbu Y
+        const maxDana = Math.ceil(Math.max(...danaAnggaran, ...danaDigunakan) / 10) * 10 + 10;
 
-  var options = {
-    chart: {
-      height: 350,
-      type: 'bar',
-      toolbar: { show: true },
-      animations: {
-        enabled: true,
-        easing: 'easeinout',
-        speed: 1000
-      }
-    },
-    series: [
-      {
-        name: 'Dana Dianggarkan (Miliar)',
-        data: danaAnggaran
-      },
-      {
-        name: 'Dana Digunakan (Miliar)',
-        data: danaDigunakan
-      },
-        // name: 'Penyerapan (%)',
-        // data: penyerapanDana
-      
-    ],
-    colors: ['#219EBC', '#4CAF50'],
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: '40%',
-        endingShape: 'rounded',
-        borderRadius: 4
-      }
-    },
-    // Hilangkan hanya nilai (angka) di atas bar
-    dataLabels: {
-      enabled: false
-    },
-    xaxis: {
-      categories: [
-      'Penanggulangan Bencana', 
-      'Beasiswa Pendidikan SMP', 
-      'Pengadaan ATK', 
-      'Perjalanan Dinas', 
-      'Pembelian Bus Sekolah', 
-      'Seleksi Sekolah Kedinasan']
-    },
-    yaxis: {
-      title: {
-        text: 'Dana (Miliar)'
-      },
-      min: 0,
-      max: maxDana,
-      labels: {
-        formatter: val => val + ' M'
-      }
-    },
-    tooltip: {
-      shared: true,
-      intersect: false,
-      y: {
-        formatter: val => val + ' M'
-      }
-    },
-    legend: {
-      position: 'top',
-      horizontalAlign: 'center'
-    },
-    grid: {
-      borderColor: '#eee',
-      row: { colors: ['#f9f9f9', 'transparent'], opacity: 0.5 }
-    }
-  };
+        var options = {
+            chart: {
+                height: 350,
+                type: 'bar',
+                toolbar: { show: true },
+                animations: {
+                    enabled: true,
+                    easing: 'easeinout',
+                    speed: 1000
+                }
+            },
+            series: [
+                {
+                    name: 'Dana Dianggarkan (Miliar)',
+                    data: danaAnggaran
+                },
+                {
+                    name: 'Dana Digunakan (Miliar)',
+                    data: danaDigunakan
+                },
+                // name: 'Penyerapan (%)',
+                // data: penyerapanDana
 
-  var chart = new ApexCharts(document.querySelector("#chart"), options);
-  chart.render();
-});
-</script>
+            ],
+            colors: ['#219EBC', '#4CAF50'],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '40%',
+                    endingShape: 'rounded',
+                    borderRadius: 4
+                }
+            },
+            // Hilangkan hanya nilai (angka) di atas bar
+            dataLabels: {
+                enabled: false
+            },
+            xaxis: {
+                categories: [
+                    'Penanggulangan Bencana',
+                    'Beasiswa Pendidikan SMP',
+                    'Pengadaan ATK',
+                    'Perjalanan Dinas',
+                    'Pembelian Bus Sekolah',
+                    'Seleksi Sekolah Kedinasan'
+                ]
+            },
+            yaxis: {
+                title: {
+                    text: 'Dana (Miliar)'
+                },
+                min: 0,
+                max: maxDana,
+                labels: {
+                    formatter: val => val + ' M'
+                }
+            },
+            tooltip: {
+                shared: true,
+                intersect: false,
+                y: {
+                    formatter: val => val + ' M'
+                }
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'center'
+            },
+            grid: {
+                borderColor: '#eee',
+                row: { colors: ['#f9f9f9', 'transparent'], opacity: 0.5 }
+            }
+        };
 
-{{-- <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const danaAnggaran = [100, 150, 180, 100, 90, 120];
-  const danaDigunakan = [60, 90, 110, 85, 82, 90];
-  const penyerapan = [60, 70, 63, 85, 82, 90];
+        // Pastikan elemen #chart ada sebelum mencoba merender
+        const chartElement = document.querySelector("#chart");
+        if (chartElement) {
+            // **Penting:** Hapus chart lama sebelum membuat yang baru jika elemen chart sudah ada (untuk mengatasi duplikasi pada navigasi Livewire)
+            // Namun, ApexCharts akan me-replace isinya jika dipanggil lagi pada elemen yang sama.
+            // Jika Anda menggunakan Livewire, seringkali lebih aman untuk merender ulang.
+            
+            // Cek apakah instance chart sudah ada pada elemen tersebut
+            // dan hancurkan (destroy) jika Livewire mengganti DOM
+            // Namun, untuk kasus ini, kita buat instance baru saja.
 
-  const maxDana = Math.ceil(Math.max(...danaAnggaran, ...danaDigunakan) / 10) * 10;
-
-  var options = {
-    chart: {
-      height: 350,
-      type: 'line',
-      toolbar: { show: true },
-      animations: { enabled: true, easing: 'easeinout', speed: 1000 }
-    },
-    series: [
-      {
-        name: 'Dana Dianggarkan (Miliar)',
-        type: 'column',
-        data: danaAnggaran
-      },
-      {
-        name: 'Dana Digunakan (Miliar)',
-        type: 'column',
-        data: danaDigunakan
-      },
-      {
-        name: 'Penyerapan (%)',
-        type: 'line',
-        data: penyerapan,
-        yAxisIndex: 1 // arahkan ke y-axis kanan (persentase)
-      }
-    ],
-    colors: ['#219EBC', '#4CAF50', '#FFB703'],
-    stroke: {
-      width: [0, 0, 3],
-      curve: 'smooth'
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: '40%',
-        endingShape: 'rounded',
-        borderRadius: 4,
-        dataLabels: {
-          position: 'top'
+            var chart = new ApexCharts(chartElement, options);
+            chart.render();
+            console.log("Chart has been initialized/re-initialized.");
+        } else {
+            console.error("Elemen dengan id #chart tidak ditemukan.");
         }
-      }
-    },
-    dataLabels: {
-      enabled: true,
-      enabledOnSeries: [0, 1], // tampilkan hanya di bar
-      formatter: val => val + ' M',
-      offsetY: -10,
-      style: { fontSize: '12px', colors: ['#333'] }
-    },
-    xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun']
-    },
-    yaxis: [
-      {
-        title: { text: 'Dana (Miliar)' },
-        labels: { formatter: val => val + ' M' },
-        min: 0,
-        max: maxDana
-      },
-      {
-        opposite: true,
-        title: { text: 'Penyerapan (%)' },
-        labels: { formatter: val => val + '%' },
-        min: 0,
-        max: 100
-      }
-    ],
-    tooltip: {
-      shared: true,
-      intersect: false,
-      y: [
-        { formatter: val => val + ' M' },
-        { formatter: val => val + ' M' },
-        { formatter: val => val + '%' }
-      ]
-    },
-    legend: {
-      position: 'top',
-      horizontalAlign: 'center'
-    },
-    grid: {
-      borderColor: '#eee',
-      row: { colors: ['#f9f9f9', 'transparent'], opacity: 0.5 }
     }
-  };
 
-  var chart = new ApexCharts(document.querySelector("#chart"), options);
-  chart.render();
-});
-</script> --}}
+          // Panggil fungsi inisialisasi saat halaman dimuat (untuk pemuatan awal)
+    document.addEventListener("DOMContentLoaded", function () {
+        initializeChart();
+        // console.log("Hello DOMContentLoaded");
+    });
 
+    // Panggil fungsi inisialisasi saat Livewire selesai melakukan navigasi
+    document.addEventListener("livewire:navigated", () => {
+        initializeChart();
+        // console.log("Hello livewire:navigated");
+    });
+
+
+</script>
