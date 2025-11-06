@@ -12,9 +12,23 @@
             <input type="text" placeholder="Cari kode atau nama kegiatan.." wire:model.live="search" class="form-control w-25 rounded-1">
             <!-- Kanan -->
             <div class="d-flex gap-2">
-                <button type="button" class="btn btn-danger" wire:click="kosongkanTabel">
+                {{-- <button type="button" class="btn btn-danger" wire:click="kosongkanTabel">
                     <i class="bi bi-trash"></i> Kosongkan Database
                 </button>
+                 --}}
+                <button type="button" class="btn btn-danger" wire:click="kosongkanTabel" wire:loading.attr="disabled" wire:target="kosongkanTabel">
+                    {{-- Saat tidak loading --}}
+                    <span wire:loading.remove wire:target="kosongkanTabel">
+                        <i class="bi bi-trash"></i> Kosongkan Database
+                    </span>
+
+                    {{-- Saat loading --}}
+                    <span wire:loading wire:target="kosongkanTabel" style="display:none;">
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        Mengosongkan..
+                    </span>
+                </button>
+
                 <button type="button" class="btn btn-success" wire:click="openImportModal">
                     <i class="bi bi-upload"></i> Import Data
                 </button>
@@ -129,7 +143,7 @@
                             Kinerja
                         </label>
                         <input type="text" class="form-control @error('kinerja') is-invalid @enderror" id="kode_opd"
-                            wire:model="kinerja" placeholder="Masukkan sub kegiatan..." maxlength="255">
+                            wire:model="kinerja" placeholder="Masukkan Kinerja..." maxlength="255">
                         @error('kinerja')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -141,17 +155,17 @@
                             Indikator
                         </label>
                         <input type="text" class="form-control @error('indikator') is-invalid @enderror" id="kode_opd"
-                            wire:model="indikator" placeholder="Masukkan sub kegiatan..." maxlength="255">
+                            wire:model="indikator" placeholder="Masukkan Indikator..." maxlength="255">
                         @error('indikator')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="nip" class="form-label">
-                            Indikator
+                            Satuan
                         </label>
                         <input type="text" class="form-control @error('satuan') is-invalid @enderror" id="kode_opd"
-                            wire:model="satuan" placeholder="Masukkan sub kegiatan..." maxlength="255">
+                            wire:model="satuan" placeholder="Masukkan Satuan..." maxlength="255">
                         @error('satuan')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -161,7 +175,7 @@
                             Klasifikasi Belanja
                         </label>
                         <input type="text" class="form-control @error('klasifikasiBelanja') is-invalid @enderror" id="kode_opd"
-                            wire:model="klasifikasiBelanja" placeholder="Masukkan sub kegiatan..." maxlength="255">
+                            wire:model="klasifikasiBelanja" placeholder="Masukkan Klasifikasi Belanja..." maxlength="255">
                         @error('klasifikasiBelanja')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -234,7 +248,6 @@
         <x-slot name="closeButton">
             <button type="button" class="btn-close" aria-label="Close" wire:click="closeImportModal"></button>
         </x-slot>
-
         {{-- Body modal --}}
         <div class="row">
             <div class="col-12">
@@ -258,7 +271,6 @@
                 </form>
             </div>
         </div>
-
         {{-- Footer modal --}}
         <x-slot name="footer">
             <div class="d-flex gap-2 w-100 justify-content-end">
@@ -279,6 +291,5 @@
         </x-slot>
     </x-modal>
 @endif
-
 </div>
 

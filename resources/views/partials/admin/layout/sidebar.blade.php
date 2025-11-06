@@ -6,12 +6,12 @@
                     <div class="oveflow-hidden d-flex align-items-center justify-content-center"
                         style="height: 60px; width: auto" :class="{ 'me-2': !sidebarCollapsed }">
                         <div class="d-flex align-items-center justify-content-center my-3">
-                            <img src="{{ asset('assets/img/simdotiadmin.PNG') }}" alt="Logo SIMDOTIPPS" class="img-fluid logo-simdoti" style="max-width: 70px;">
+                            <img src="{{ asset('assets/img/LogoOtsus.png') }}" alt="Logo SIMDOTIPPS" class="img-fluid logo-simdoti" style="max-width: 70px;">
                         </div>
                     </div>
                 </a>
                     <div class="d-flex align-items-center justify-content-center my-1 mb-3">
-                        <img src="{{ asset('assets/img/Serap.PNG') }}" alt="Logo SIMDOTIPPS" class="img-fluid logo-simdoti" style="max-width: 130px;"  x-show="!sidebarCollapsed">
+                        <img src="{{ asset('assets/img/Serap.png') }}" alt="Logo SIMDOTIPPS" class="img-fluid logo-simdoti" style="max-width: 130px;"  x-show="!sidebarCollapsed">
                     </div>
             </div>
             <button class="btn btn-outline-dark" x-show="showSidebar" type="button" @click="showSidebar = false">

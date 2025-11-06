@@ -12,6 +12,7 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
 use Livewire\Attributes\On;
+use Illuminate\Http\Request;
 
 class SubKegiatan extends Component
 {
@@ -57,9 +58,20 @@ class SubKegiatan extends Component
         return $rules;
     }
 
+    public function search(Request $request){
+        $search = $request->input('q', '');
+            $results = ModelsSubKegiatan::query()
+                ->when($search, fn($q) => $q->where('sub_kegiatan', 'like', "%{$search}%"))
+                ->limit(30) // batasi biar ringan
+                ->get(['id', 'sub_kegiatan']);
+        return response()->json($results);
+    }
+
+    
      // Fungsi buka modal
     public function openImportModal()
     {
+        // dd("Tombol Berfungsi");
         $this->reset('file');
         $this->showImportModal = true;
 

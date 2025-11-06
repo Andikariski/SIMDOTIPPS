@@ -86,8 +86,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
             style="background: linear-gradient(135deg, #04a2dc, #0c3dff);">
             <div class="text-center">
                 {{-- <h2 class="fw-bold">SIMDOTIPPS</h2> --}}
-                 <img src="{{ asset('assets/img/SerapLogin.PNG') }}" alt="Logo SIMDOTIPPS" class="img-fluid logo-simdoti" style="max-width: 210px;">
-                <p class="mt-1">Transparansi & Akuntabilitas<br> Dana Otsus & DTI</p>
+                 <img src="{{ asset('assets/img/SerapLogin.png') }}" alt="Logo SIMDOTIPPS" class="img-fluid logo-simdoti" style="max-width: 250px;">
+                {{-- <p class="mt-1">Transparansi & Akuntabilitas<br> Dana Otsus & DTI</p> --}}
             </div>
         </div>
         <div class="col-md-7 p-5">

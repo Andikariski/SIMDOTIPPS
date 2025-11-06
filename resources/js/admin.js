@@ -21,17 +21,21 @@ const Swal2 = Swal.mixin({
     buttonsStyling: false,
 });
 
-// function initSelect2() {
-//     $("#opd").select2({
-//         width: "50%",
-//     });
-// }
+// Jalankan ulang setiap kali Livewire selesai morph/render halaman baru
 
 document.addEventListener("livewire:init", () => {
-    // initSelect2();
-    // Livewire.hook("message.processed", (message, component) => {
-    //     initSelect2();
-    // });
+    // Memanggil fungsi pertama kali page di load
+    // initAllSelect2();
+
+    Livewire.hook("morph.updated", () => {
+        // Memanggil fungsi ketika setelah pilih select
+        initAllSelect2();
+    });
+
+    document.addEventListener("livewire:navigated", () => {
+        // Memanggil fungsi ketika setelah pindah halaman
+        initAllSelect2();
+    });
 
     Livewire.on("success-login", (data) => {
         Toast.fire({
@@ -71,6 +75,14 @@ document.addEventListener("livewire:init", () => {
     Livewire.on("succes-change", (data) => {
         Toast.fire({
             icon: "success",
+            title: data.message,
+        });
+    });
+
+    // Notifikasi Validasi rap
+    Livewire.on("failed-add-rap", (data) => {
+        Toast.fire({
+            icon: "error",
             title: data.message,
         });
     });
@@ -181,156 +193,89 @@ document.addEventListener("livewire:init", () => {
         });
     });
 
-    Livewire.on("success-edit-data", (data) => {
-        Toast.fire({
-            icon: "success",
-            title: data.message || "berhasil mengubah data",
-        });
-    });
-    Livewire.on("failed-edit-data", (data) => {
-        Toast.fire({
-            icon: "error",
-            title: data.message || "gagal mengubah data",
-        });
-    });
+    function initAllSelect2() {
+        // Inisialisasi semua select dengan AJAX
 
-    Livewire.on("success-archive-data", (data) => {
-        Toast.fire({
-            icon: "success",
-            title: data.message || "berhasil mengarsipkan data",
-        });
-    });
-    Livewire.on("success-restore-data", (data) => {
-        Toast.fire({
-            icon: "success",
-            title: data.message || "berhasil mengembalikan data",
-        });
-    });
+        const $selectSK = $("#selectSubKegiatan");
+        const subKegiatanUrl = $selectSK.data("url"); // otomatis ambil dari atribut data-url
 
-    // sweetalert modal
-    Livewire.on("confirm-delete-data-bidang", (data) => {
-        Swal2.fire({
-            icon: "question",
-            title:
-                "Yakin ingin hapus data bidang <strong class='text-primary'>" +
-                data["nama_bidang"] +
-                "</strong> ?",
-            showCancelButton: true,
-            cancelButtonText: "Batal",
-            confirmButtonText: "Ya, hapus",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Livewire.dispatch("delete-data-bidang", { id: data["id"] });
-            }
-        });
-    });
-    Livewire.on("confirm-delete-data-kegiatan", (data) => {
-        Swal2.fire({
-            icon: "question",
-            title:
-                "Yakin ingin hapus data kegiatan <strong class='text-primary'>" +
-                data["nama_kegiatan"] +
-                "</strong> ?",
-            showCancelButton: true,
-            cancelButtonText: "Batal",
-            confirmButtonText: "Ya, hapus",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Livewire.dispatch("delete-data-kegiatan", { id: data["id"] });
-            }
-        });
-    });
-    Livewire.on("confirm-delete-data-jabatan", (data) => {
-        Swal2.fire({
-            icon: "question",
-            title:
-                "Yakin ingin hapus data jabatan <strong class='text-primary'>" +
-                data["nama_jabatan"] +
-                "</strong> ?",
-            showCancelButton: true,
-            cancelButtonText: "Batal",
-            confirmButtonText: "Ya, hapus",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Livewire.dispatch("delete-data-jabatan", { id: data["id"] });
-            }
-        });
-    });
-    // sweetalert data berita
-    Livewire.on("confirm-soft-delete-data-berita", (data) => {
-        Swal2.fire({
-            icon: "question",
-            title:
-                "Yakin ingin mengarsipkan berita <strong class='text-primary'>" +
-                data["judul_berita"] +
-                "</strong> ?",
-            showCancelButton: true,
-            cancelButtonText: "Batal",
-            confirmButtonText: "Ya, hapus",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Livewire.dispatch("soft-delete-data-berita", {
-                    id: data["id"],
-                });
-            }
-        });
-    });
-    Livewire.on("confirm-force-delete-data-berita", (data) => {
-        Swal2.fire({
-            icon: "question",
-            title:
-                "Yakin ingin hapus permanen berita <strong class='text-primary'>" +
-                data["judul_berita"] +
-                "</strong> ?",
-            showCancelButton: true,
-            cancelButtonText: "Batal",
-            confirmButtonText: "Ya, hapus permanen",
-            footer: '<strong class="text-danger">berita yang di hapus tidak akan bisa dikembalikan!</strong>',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Livewire.dispatch("force-delete-data-berita", {
-                    id: data["id"],
-                });
-            }
-        });
-    });
-    Livewire.on("confirm-restore-data-berita", (data) => {
-        Swal2.fire({
-            icon: "question",
-            title:
-                "Yakin ingin mengembalikan data berita <strong class='text-primary'>" +
-                data["judul_berita"] +
-                "</strong> ?",
-            showCancelButton: true,
-            cancelButtonText: "Batal",
-            confirmButtonText: "Ya, Kembalikan",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Livewire.dispatch("restore-data-berita", {
-                    id: data["id"],
-                });
-            }
-        });
-    });
+        const $selectAK = $("#selectActivitasUtama");
+        const aktivitasUtamaUrl = $selectAK.data("url"); // otomatis ambil dari atribut data-url
 
-    // sweetalert data dokumen
-    Livewire.on("confirm-delete-data-dokumen", (data) => {
-        Swal2.fire({
-            icon: "question",
-            title:
-                "Yakin ingin hapus permanen file <strong class='text-primary'>" +
-                data["nama_dokumen"] +
-                "</strong> ?",
-            showCancelButton: true,
-            cancelButtonText: "Batal",
-            confirmButtonText: "Ya, hapus permanen",
-            footer: '<strong class="text-danger">data dokumen yang di hapus tidak akan bisa dikembalikan!</strong>',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Livewire.dispatch("delete-data-dokumen", {
-                    id: data["id"],
-                });
+        initSelect2(
+            "#selectSubKegiatan",
+            "subKegiatanChanged",
+            subKegiatanUrl,
+            "sub_kegiatan"
+        );
+        initSelect2(
+            "#selectActivitasUtama",
+            "activitasUtamaChanged",
+            aktivitasUtamaUrl,
+            "aktivitas_utama"
+        );
+    }
+
+    /**
+     * Fungsi generik untuk inisialisasi Select2 (mendukung AJAX)
+     * @param {string} selector - ID elemen select
+     * @param {string} eventName - Nama event Livewire
+     * @param {string|null} ajaxUrl - URL endpoint untuk pencarian AJAX
+     * @param {string|null} textField - Nama field teks yang ditampilkan dari hasil JSON
+     */
+
+    function initSelect2(
+        selector,
+        eventName,
+        ajaxUrl = null,
+        textField = null
+    ) {
+        const $select = $(selector);
+        if ($select.length === 0) return;
+
+        // Hancurkan Select2 lama jika sudah terpasang
+        if ($select.hasClass("select2-hidden-accessible")) {
+            $select.off("change.select2");
+            $select.select2("destroy");
+        }
+
+        // Delay sedikit supaya DOM sudah siap sepenuhnya
+        setTimeout(() => {
+            const config = {
+                // theme: "bootstrap-5",
+                width: "100%",
+                // placeholder: "-- Pilih Opsi --",
+                allowClear: true,
+            };
+
+            // Jika pakai AJAX
+            if (ajaxUrl) {
+                config.ajax = {
+                    url: ajaxUrl,
+                    dataType: "json",
+                    delay: 300,
+                    data: (params) => ({
+                        q: params.term, // parameter pencarian
+                    }),
+                    processResults: (data) => ({
+                        results: data.map((item) => ({
+                            id: item.id,
+                            text: textField ? item[textField] : item.text,
+                        })),
+                    }),
+                };
+                config.minimumInputLength = 2; // baru cari setelah ketik 2 huruf
             }
-        });
-    });
+
+            // Inisialisasi Select2
+            $select.select2(config);
+
+            // Event perubahan
+            $select.on("change.select2", function () {
+                const value = $(this).val();
+                console.log(`${selector} changed:`, value);
+                Livewire.dispatch(eventName, { id: value });
+            });
+        }, 300);
+    }
 });
