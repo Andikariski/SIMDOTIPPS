@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('tbl_kontrol', function (Blueprint $table) {
             $table->id();
-            $table->string('nama')->default('RAP');
-            $table->enum('status', ['Buka', 'Tutup'])->default('Tutup');
+            // $table->string('nama')->default('RAP');
+            // $table->enum('status', ['Buka', 'Tutup'])->default('Tutup');
+            $table->string('tipe'); // contoh: RAP_Akses, RAP_Status
+            $table->string('status');
             $table->timestamps();
         });
     }

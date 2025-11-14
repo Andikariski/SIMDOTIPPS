@@ -9,63 +9,96 @@
 <div>
     <div class="card text-white shadow-sm border-0" style="background: linear-gradient(135deg, #219EBC 0%,  #4f46e5 100%);">
         <div class="row">
-            <div class="col-3">
-                <div class="card-body">
-                    <h5 class="card-title">Dana Otsus BG</h5>
-                    @if ($paguInduk === null)
-                        <span class="badge bg-danger">Belum Input Pagu Induk</span>
-                    @else   
-                        <h3 class="fw-bold">{{ number_format($paguInduk->pagu_BG, 0, ',' , '.') }}</h3>
-                    @endif
-                        <p class="mb-0">Tahun Anggaran {{ date('Y') }}</p>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card-body">
-                   <h5 class="card-title">Dana Otsus SG</h5>
-                    @if ($paguInduk === null)
-                        <span class="badge bg-danger">Belum Input Pagu Induk</span>
-                    @else   
-                        <h3 class="fw-bold">{{ number_format($paguInduk->pagu_SG, 0, ',' , '.') }}</h3>
-                    @endif
-                        <p class="mb-0">Tahun Anggaran {{ date('Y') }}</p>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card-body">
-                    <h5 class="card-title">Dana Otsus DTI</h5>
-                    @if ($paguInduk === null)
-                        <span class="badge bg-danger">Belum Input Pagu Induk</span>
-                    @else   
-                        <h3 class="fw-bold">{{ number_format($paguInduk->pagu_DTI, 0, ',' , '.') }}</h3>
-                    @endif
-                        <p class="mb-0">Tahun Anggaran {{ date('Y') }}</p>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card-body">
-                    <h5 class="card-title">Dana SiLPA</h5>
+    {{-- 🟩 Dana Otsus BG --}}
+    <div class="col-3">
+        <div class="card-body">
+            <h5 class="card-title">Dana Otsus BG</h5>
+            @if ($paguInduk)
+                <h3 class="fw-bold">{{ number_format($paguInduk->pagu_BG, 0, ',', '.') }}</h3>
+                <p class="mb-0">
+                    Tahun Anggaran Aktif :
+                    <span class="badge bg-success">{{ $paguInduk->tahun_pagu }}</span>
+                </p>
+            @else
+                <span class="badge bg-danger">Belum Input Pagu Induk</span>
+                <p class="mb-0">
+                    Tahun Anggaran Aktif :
                     <span class="badge bg-danger">-</span>
-                    {{-- <h3 class="fw-bold">XXX.000.000.000</h3> --}}
-                    <p class="mb-0">Tahun Anggaran 2025</p>
-                </div>
-            </div>
+                </p>
+            @endif
         </div>
+    </div>
+
+    {{-- 🟩 Dana Otsus SG --}}
+    <div class="col-3">
+        <div class="card-body">
+            <h5 class="card-title">Dana Otsus SG</h5>
+            @if ($paguInduk)
+                <h3 class="fw-bold">{{ number_format($paguInduk->pagu_SG, 0, ',', '.') }}</h3>
+                <p class="mb-0">
+                    Tahun Anggaran Aktif :
+                    <span class="badge bg-success">{{ $paguInduk->tahun_pagu }}</span>
+                </p>
+            @else
+                <span class="badge bg-danger">Belum Input Pagu Induk</span>
+                <p class="mb-0">
+                    Tahun Anggaran Aktif :
+                    <span class="badge bg-danger">-</span>
+                </p>
+            @endif
+        </div>
+    </div>
+
+    {{-- 🟩 Dana Otsus DTI --}}
+    <div class="col-3">
+        <div class="card-body">
+            <h5 class="card-title">Dana Otsus DTI</h5>
+            @if ($paguInduk)
+                <h3 class="fw-bold">{{ number_format($paguInduk->pagu_DTI, 0, ',', '.') }}</h3>
+                <p class="mb-0">
+                    Tahun Anggaran Aktif :
+                    <span class="badge bg-success">{{ $paguInduk->tahun_pagu }}</span>
+                </p>
+            @else
+                <span class="badge bg-danger">Belum Input Pagu Induk</span>
+                <p class="mb-0">
+                    Tahun Anggaran Aktif :
+                    <span class="badge bg-danger">-</span>
+                </p>
+            @endif
+        </div>
+    </div>
+
+    {{-- 🟩 Dana SiLPA --}}
+    <div class="col-3">
+        <div class="card-body">
+            <h5 class="card-title">Dana SiLPA</h5>
+            <span class="badge bg-danger">-</span>
+            <p class="mb-0">
+                Tahun Anggaran :
+                <span class="badge bg-secondary">
+                    {{ $paguInduk ? $paguInduk->tahun_pagu : date('Y') }}
+                </span>
+            </p>
+        </div>
+    </div>
+</div>
+
     </div>
     <div class="mt-5">
        <div class="row align-items-center mb-3 mt-4">
             <div class="col-md-4">
                 <input type="text" placeholder="Search..." wire:model.live="search" class="form-control rounded-1">
             </div>
-            <div class="col-md-2">
+            {{-- <div class="col-md-2">
                 <select class="form-control" wire:model.live="filterTahun">
                         <option   option value="">--Pilih Tahun--</option>
                     @foreach ($tahuns as $tahun)
                         <option value="{{ $tahun }}">Tahun {{ $tahun }}</option>
                     @endforeach
             </select>
-            </div>
-            <div class="col-md-6 d-flex justify-content-end">
+            </div> --}}
+            <div class="col-md-8 d-flex justify-content-end">
                 <button type="button" class="btn btn-primary" wire:click="openTambahModal">
                     <i class="bi bi-plus-lg"></i> Input Pagu OPD
                 </button>
@@ -86,7 +119,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                @forelse ($pagus as $pagu)
+                @forelse ($paguOpds as $pagu)
                     <tr>
                         <td class="px-4 py-1 text-dark">{{ $loop->iteration }}</td> <!-- Nomor urut -->
                         <td class="px-4 py-1 text-dark">{{ Str::limit(strip_tags($pagu->opd->nama_opd), 30) }}</td>
@@ -138,7 +171,7 @@
         </div>    
     </div>   
      <div class="mt-4">
-        {{ $pagus->links('vendor.livewire.bootstrap-pagination') }}
+        {{ $paguOpds->links('vendor.livewire.bootstrap-pagination') }}
     </div>
 </div>
 
@@ -149,25 +182,66 @@
                 <button type="button" class="btn-close" aria-label="Close" wire:click="closeModal">
                 </button>
             </x-slot>
-            <hr>
+            {{-- <hr> --}}
+            <div class="card text-white shadow-sm border-0" style="background: linear-gradient(135deg, #df5200 0%,  #df5200 100%); height: 90px;">
+            <div class="row">
+                <div class="col-4">
+                    <div class="card-body">
+                        <h6 class="card-title">Sisa Pagu BG</h6>                      
+                        <h6 class="fw-bold">{{ number_format($this->sisaBG, 0, ',' , '.') }}</h6>
+                    </div>
+                </div>
+                <div class="col-4">
+                   <div class="card-body">
+                        <h6 class="card-title">Sisa Pagu SG</h6>                      
+                        <h6 class="fw-bold">{{ number_format($this->sisaSG, 0, ',' , '.') }}</h6>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card-body">
+                        <h6 class="card-title">Sisa Pagu DTI</h6>                      
+                        <h6 class="fw-bold">{{ number_format($this->sisaDTI, 0, ',' , '.') }}</h6>
+                    </div>
+                </div>
+                {{-- <div class="col-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Dana SiLPA</h5>
+                        <span class="badge bg-danger">-</span>
+                        <h3 class="fw-bold">XXX.000.000.000</h3>
+                        <p class="mb-0">Tahun Anggaran 2025</p>
+                    </div>
+                </div> --}}
+            </div>
+        </div>
+            {{-- <hr> --}}
             <form wire:submit.prevent="simpan">
-                <div class="mb-3">
+                <div class="mb-2 mt-2">
                     <label class="form-label"><strong>Instansi OPD</strong></label> 
                         @if ($modalTitle == 'Edit Data Pagu OPD')
                             <input type="text" class="form-control" value="{{ $namaOpd }}" disabled>
                         @else
-                        <select id="opd" class="form-control select2" wire:model="idOpd">
+                        <select id="opd" class="form-control select2 @error('idOpd') is-invalid @enderror"" wire:model="idOpd">
                                 <option value="">-- Pilih Instansi --</option>
                                     @foreach ($opds as $opd)
                                         <option value="{{ $opd->id }}">{{ $opd->nama_opd }}</option>
                                     @endforeach
                         </select>
-                        @error('opd')
+                        @error('idOpd')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     @endif
                 </div>
-                <div class="mb-3">
+                <div class="mb-2">
+                    <label for="paguBG" class="form-label">
+                        <strong>Tahun Pagu Berjalan</strong>
+                    </label>
+                    <input type="number" class="form-control @error('tahunPagu') is-invalid @enderror" id="pagu_bg"
+                        wire:model="tahunAktif" placeholder="Masukkan Tahun Pagu" maxlength="255" disabled>
+                    @error('tahunPagu')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="mb-2">
                     <label for="paguBG" class="form-label">
                         <strong>Pagu Block Grand (BG 1%)</strong>
                     </label>
@@ -177,7 +251,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="mb-3">
+                <div class="mb-2">
                     <label for="paguSG" class="form-label">
                         <strong>Pagu Spesifik Grand (1,25%)</strong>
                     </label>
@@ -187,7 +261,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="mb-3">
+                <div class="mb-1">
                     <label for="paguDTI" class="form-label">
                         <strong>Pagu Dana Tambahan Infrastruktur (DTI)</strong>
                     </label>
@@ -229,7 +303,7 @@
                 <button type="button" class="btn-close" aria-label="Close" wire:click="closeModal">
                 </button>
             </x-slot>
-
+            <hr>
             <div class="row">
                 <div class="col-12 col-md-12">
                     <div class="mb-3">

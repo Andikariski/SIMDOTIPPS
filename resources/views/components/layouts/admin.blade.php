@@ -3,7 +3,7 @@
 {{-- @livewireScripts --}}
 
 
-<body x-cloak x-data="{ sidebarCollapsed: $persist(false), showSidebar: false }" style="background-color:#fafafa">
+<body x-cloak x-data="{ sidebarCollapsed: $persist(false), showSidebar: false }" style="background-color:#f2f3f7">
         <!-- Sidebar -->
         @include('partials.admin.layout.sidebar')
 
@@ -23,6 +23,7 @@
     <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
     <!-- JS sebelum </body> -->
     <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/admin.js') }}"></script> --}}
     @stack('scripts') {{-- Tambahkan stack untuk JS khusus --}}
     @livewireScripts
 </body>

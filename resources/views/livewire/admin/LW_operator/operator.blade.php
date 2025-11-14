@@ -6,7 +6,7 @@
         ];
     @endphp
     <x-breadcrumb :items="$breadcrumbs" />
-    <div class="">
+    <div class="mt-5">
         <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
             <input type="text" placeholder="Cari nama operator..." wire:model.live="search" class="form-control w-25 rounded-1">
         

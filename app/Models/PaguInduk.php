@@ -13,5 +13,25 @@ class PaguInduk extends Model
         'pagu_BG',
         'pagu_DTI',
         'tahun_pagu',
+        'status'
     ];
+
+     public function paguOpd()
+    {
+        return $this->hasMany(Pagu::class, 'tahun_pagu', 'tahun_pagu');
+    }
+
+     protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            // Kalau status diubah jadi Aktif
+            if ($model->status === 'Aktif') {
+                // Nonaktifkan semua tahun lain
+                static::where('id', '!=', $model->id)
+                    ->update(['status' => 'Nonaktif']);
+            }
+        });
+    }
 }

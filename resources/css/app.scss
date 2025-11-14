@@ -16,7 +16,7 @@ $spacers: (
     // 5rem, buat section besar
 );
 // border radius
-$border-radius: 0.5rem !default; // Default radius lebih besar
+$border-radius: 0.4rem !default; // Default radius lebih besar
 $border-radius-sm: 0.5rem !default; // Small tetap rounded
 $border-radius-lg: 1rem !default; // Lebih besar untuk card & modal
 $border-radius-xl: 1.5rem !default; // Super rounded untuk elemen besar
@@ -27,8 +27,10 @@ $border-radius-pill: 50rem !default; // Tetap full pill (badge, tombol pill)
 $primary: #219ebc;
 $secondary: #8ecae6;
 $dark: #023047;
-$warning: #ffb703;
+$warning: #ffe600;
+// $warning: #ffb703;
 $danger: #fb8500;
+// $danger: #d42a00;
 $info: #8ecae6;
 $light: #f8f9fa;
 $success: #4caf50;

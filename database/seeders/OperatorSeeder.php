@@ -20,7 +20,7 @@ class OperatorSeeder extends Seeder
         User::insert([
             [
                 'name'              => 'Tim Otsus PPS',
-                'email'             => 'bapperida.pps@gmail.com',
+                'email'             => 'timotsus.pps@gmail.com',
                 'password'          => bcrypt('otsus@2025'),
                 'kontak'            => '082399770016',
                 'is_admin'          => 1,
@@ -44,7 +44,7 @@ class OperatorSeeder extends Seeder
                 'name'              => 'Rocky',
                 'email'             => 'dpupr.pps@gmail.com',
                 'password'          => bcrypt('dpupr@2025'),
-                'kontak'            => '082393145623',
+                'kontak'            => '082397865623',
                 'is_admin'          => 0,
                 'opd_id'            => 10,
                 'email_verified_at' => $now, // Disarankan

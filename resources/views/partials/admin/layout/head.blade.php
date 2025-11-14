@@ -28,7 +28,7 @@
     <link href="{{ asset('assets/select2/css/select2.min.css') }}" rel="stylesheet">
 
 
-    @stack('styles') {{-- Tambahkan stack untuk CSS khusus --}}
+    @stack('styles')
     @vite(['resources/css/app.scss', 'resources/js/admin.js'])
     @livewireStyles
 </head>

@@ -183,7 +183,8 @@ return [
         'nama_opd' => 'Nama OPD',
         'kode_opd' => 'Kode OPD',
         'alamat_opd' => 'Alamat OPD',
-        'jenis_kegiatan' =>'Jenis Kegiatan'
+        'jenis_kegiatan' =>'Jenis Kegiatan',
+        'pagu_SG' => 'Pagu SG'
     ],
 
 ];

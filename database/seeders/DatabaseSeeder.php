@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Kontrol;
 use App\Models\Opd;
 use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,7 +20,8 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         $this->call([
             \Database\Seeders\OpdSeeder::class,
-            \Database\Seeders\OperatorSeeder::class
+            \Database\Seeders\OperatorSeeder::class,
+            \Database\Seeders\KontrolSeeder::class
         ]);
 
     }

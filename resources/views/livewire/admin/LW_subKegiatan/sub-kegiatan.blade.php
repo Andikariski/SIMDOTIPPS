@@ -6,7 +6,7 @@
         ];
     @endphp
     <x-breadcrumb :items="$breadcrumbs" />
-    <div class="">
+    <div class="mt-5">
        <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
             <!-- Kiri -->
             <input type="text" placeholder="Cari kode atau nama kegiatan.." wire:model.live="search" class="form-control w-25 rounded-1">

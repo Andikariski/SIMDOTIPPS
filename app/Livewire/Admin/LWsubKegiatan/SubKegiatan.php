@@ -13,8 +13,9 @@ use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
 use Livewire\Attributes\On;
 use Illuminate\Http\Request;
+use App\Livewire\Admin\SuperAdminAuth as AdminSuperAdminAuth;
 
-class SubKegiatan extends Component
+class SubKegiatan extends AdminSuperAdminAuth
 {
     use WithPagination, WithFileUploads;
     public $filterTahun = '';

@@ -1,12 +1,80 @@
 <div>
      @php
         $breadcrumbs = [
-            ['name' => 'Data RAP', 'url' => route('superadmin.pagu.induk')],
+            ['name' => 'Data RAP', 'url' => route('opd.rap.rapSG')],
             // ['name' => 'Artikel', 'url' => route('admin.posts.index')],
         ];
     @endphp
     <x-breadcrumb :items="$breadcrumbs" />
 <div>
+ <div class="card text-white shadow-sm border-0" style="background: linear-gradient(135deg, #219EBC 0%,  #4f46e5 100%);">
+        <div class="row">
+            <div class="col-3">
+                <div class="card-body">
+                    <h5 class="card-title">Dana Otsus SG</h5>
+                        @if($getPaguOPD && $getTahunAktif)
+                            <h3 class="fw-bold">
+                                {{ number_format($getPaguOPD->pagu_SG, 0, ',', '.') }}
+                            </h3>
+                            <p class="mb-0">Tahun Anggaran Aktif : <span class="badge bg-success">{{ $getPaguOPD->tahun_pagu }}</span></p>
+                        @else
+                            <span class="badge bg-danger">Belum ada pagu aktif / Pagu belum dibagi</span>
+                        @endif
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card-body">
+                    <h5 class="card-title">Dana Terpakai BG</h5>
+                    <h3 class="fw-bold">135.000.000.000</h3>
+                    <p class="mb-0">Tahun Anggaran 2025</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="card-body">
+                    <h5 class="card-title">Dana SiLPA</h5>
+                    <h3 class="fw-bold">20.000.000.000</h3>
+                    <p class="mb-0">Tahun Anggaran 2025</p>
+                </div>
+            </div>
+            <div class="col-3">
+            <div class="card-body">
+                <h5 class="card-title">Akses & Status RAP</h5>
+                {{-- Kode Notifikasi Status Akses RAP --}}
+                    @if ($statusAkses === 'Buka')
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="badge bg-success me-1">
+                                <i class="bi bi-unlock-fill fs-5 text-white"></i>
+                            </span>
+                            <h6 class="fw-bold mb-0">Terbuka</h6>
+                        </div>
+                        {{-- <p class="mb-0 text-muted">Akses RAP Terbuka</p> --}}
+                    @elseif($statusAkses === 'Tutup')
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="badge bg-danger me-1">
+                                <i class="bi bi-lock-fill fs-5 text-white"></i>
+                            </span>
+                            <h6 class="fw-bold mb-0">Terkunci</h6>
+                        </div>
+                        {{-- <p class="mb-0 text-muted">Akses RAP Tertutup</p> --}}
+                    @endif
+
+                    {{-- Kode Notifikasi Status RAP --}}
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-danger me-1">
+                            <i class="bi bi-repeat-1 fs-5 text-white"></i>
+                        </span>
+                        @if ($statusRAP === 'RAP Awal')
+                            <h6 class="fw-bold mb-0">RAP Awal</h6>
+                        @elseif($statusRAP === 'Perubahan II')
+                            <h6 class="fw-bold mb-0">Perubahan II</h6>
+                        @elseif($statusRAP === 'Perubahan III')
+                            <h6 class="fw-bold mb-0">Perubahan III</h6>
+                        @endif
+                    </div>
+            </div>
+            </div>
+        </div>
+    </div>
     {{-- <div class="card text-white shadow-sm border-0" style="background: linear-gradient(135deg, #219EBC 0%,  #4f46e5 100%);">
         <div class="row">
             <div class="col-3">
@@ -39,7 +107,7 @@
             </div>
         </div>
     </div> --}}
-    @if ($status === 'Buka')
+    {{-- @if ($status === 'Buka')
         <div class="alert alert-success  alert-dismissible fade show" role="alert">
             <i class="bi bi-exclamation-diamond" style="font-size: 20px; color:rgb(0, 185, 46)"></i>
             <strong> TERBUKA, </strong> Akses perubahan RAP sudah terbuka, silakan lakukan perubahan.
@@ -51,7 +119,7 @@
             <strong> TERKUNCI, </strong> Akses perubahan RAP masih terkunci, anda tidak dapat melakukan perubahan.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    @endif
+    @endif --}}
     <div class="mt-5">
        <div class="row align-items-center mb-3 mt-4">
             <div class="col-md-4">
@@ -66,13 +134,13 @@
             </select>
             </div>
             <div class="col-md-6 d-flex justify-content-end">
-                @if($status === 'Buka')
-                    <a href="{{ route('rap.create') }}" class="btn btn-primary" wire:navigate>
-                        <i class="bi bi-plus-lg"></i> Input RAP
+                @if($statusRAP === 'Buka')
+                    <a href="{{ route('opd.rap.create',['type' => 'rap-opd-sg']) }}" class="btn btn-primary" wire:navigate>
+                        <i class="bi bi-journal-plus"></i> Input RAP
                     </a>
                 @else
-                    <a class="btn btn-danger disabled-link">
-                        <i class="bi bi-plus-lg"></i> Input RAP
+                    <a class="btn btn-outline-primary disabled-link">
+                        <i class="bi bi-journal-plus"></i> Input RAP
                     </a>
                 @endif
             </div>
@@ -86,39 +154,39 @@
                         <th class="px-4 py-2 text-dark">Sub Kegiatan</th>
                         <th class="px-4 py-2 text-dark">Pagu</th>
                         <th class="px-4 py-2 text-dark">Sumber Dana</th>
-                        <th class="px-4 py-2 text-dark">Opd</th>
                         <th class="px-4 py-2 text-dark">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                {{-- @forelse ($pagus as $pagu) --}}
+                @forelse ($raps as $rap)
                     <tr>
-                        {{-- <td class="px-4 py-1 text-dark">{{ $loop->iteration }}</td>
-                        <td class="px-4 py-1 text-dark">{{ $pagu->tahun_pagu }}</td>
-                        <td class="px-4 py-1 text-dark">{{ number_format($pagu->pagu_BG) }}</td>
-                        <td class="px-4 py-1 text-dark">{{ number_format($pagu->pagu_SG) }}</td>
-                        <td class="px-4 py-1 text-dark">{{ number_format($pagu->pagu_DTI) }}</td> --}}
-
-                         {{-- <td class="px-4 py-1 d-flex gap-2">
-
-                                <button wire:click="openEditModal({{ $pagu->id }})"
+                        <td class="px-4 py-1 text-dark">{{ $loop->iteration }}</td>
+                        <td class="px-4 py-1 text-dark">{{ $rap->kode_klasifikasi }}</td>
+                        <td class="px-4 py-1 text-dark">{{ Str::limit(strip_tags($rap->sub_kegiatan), 30)  }}</td>
+                        <td class="px-4 py-1 text-dark">{{ number_format($rap->pagu_tahun_berjalan) }}</td>
+                        <td class="px-4 py-1 text-dark">{{ $rap->sumber_dana }}</td>
+                          <td class="px-4 py-1 d-flex gap-2">
+                              @if($statusAkses === 'Buka')
+                                <button wire:click="openEditModal({{ $rap->id }})"
                                     class="btn btn-sm btn-outline-dark d-flex align-items-center gap-1">
                                     <i class="bi bi-pencil"></i>
                                 </button>
 
-                                <button wire:click="openDetailModal({{ $pagu->id }})"
+                                <button wire:click="openDetailModal({{ $rap->id }})"
                                     class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1">
                                     <i class="bi bi-eye"></i>
                                 </button>
 
-                                <button wire:click="$dispatch('confirm-delete-data-paguOPD', {{ $pagu }})"
+                                <button wire:click="$dispatch('confirm-delete-data-RAPBG', {{ $rap }})"
                                     class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1">
                                     <i class="bi bi-trash3"></i>
                                 </button>
-
-                            </td> --}}
+                            @else
+                                <span class="badge bg-danger m-1">Akses Terkunci</span>
+                            @endif
+                        </td>
                     </tr>
-                {{-- @empty --}}
+                @empty
                     <tr>
                         <td colspan="7" class="px-4 py-5 text-center">
                             <div class="d-inline-flex flex-column align-items-center justify-content-center">
@@ -127,7 +195,7 @@
                             </div>
                         </td>
                     </tr>   
-                {{-- @endforelse --}}
+                @endforelse
             </tbody>
             </table>
             {{-- <select id="kegiatan" class="form-control select2" wire:model="idOpd">
@@ -139,7 +207,7 @@
         </div>    
     </div>   
      <div class="mt-4">
-        {{-- {{ $pagus->links('vendor.livewire.bootstrap-pagination') }} --}}
+        {{ $raps->links('vendor.livewire.bootstrap-pagination') }}
     </div>
 </div>
 
@@ -266,12 +334,4 @@
         </x-modal>
     @endif --}}
 </div>
-
-
-<script>
-    $('#kegiatan').select2({
-        width: '50%'
-    })
-</script>
-
 

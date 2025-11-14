@@ -31,24 +31,40 @@
             <table class="table table-striped align-middle mb-0">
                 <thead class="table-secondary">
                     <tr>
-                        <th class="px-4 py-2 text-dark">No</th>
-                        <th class="px-4 py-2 text-dark">Tahun Pagu</th>
+                        <th class="px-4 py-2 text-dark" style="width: 3%;">Akses</th>
+                        <th class="px-4 py-2 text-dark" style="width: 15%;" >Tahun Pagu</th>
                         <th class="px-4 py-2 text-dark">Pagu BG</th>
                         <th class="px-4 py-2 text-dark">Pagu SG</th>
                         <th class="px-4 py-2 text-dark">Pagu DTI</th>
-                        <th class="px-4 py-2 text-dark">Total Pagu</th>
-                        <th class="px-4 py-2 text-dark">Aksi</th>
+                        {{-- <th class="px-4 py-2 text-dark">Total Pagu</th> --}}
+                        <th class="px-4 py-2 text-dark">Status</th>
+                        <th class="px-4 py-2 text-dark" style="width: 3%;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                 @forelse ($paguInduks as $paguInduk)
                     <tr>
-                        <td class="px-4 py-1 text-dark">{{ $loop->iteration }}</td>
+                        <td class="px-4 py-1 text-dark">
+                            @if ($paguInduk->status === 'Aktif')
+                                <button wire:click="toggleStatus({{ $paguInduk->id }})" 
+                                    class="btn btn-sm btn-outline-success d-flex align-items-center gap-1">
+                                    <i class="bi bi-toggle-on"></i>
+                                </button>
+                            @else
+                                <button wire:click="toggleStatus({{ $paguInduk->id }})" 
+                                    class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1">
+                                    <i class="bi bi-toggle-off"></i>
+                                </button>
+                            @endif
+                        </td>
                         <td class="px-4 py-1 text-dark">{{ $paguInduk->tahun_pagu }}</td>
                         <td class="px-4 py-1 text-dark">{{ number_format($paguInduk->pagu_BG) }}</td>
                         <td class="px-4 py-1 text-dark">{{ number_format($paguInduk->pagu_SG) }}</td>
                         <td class="px-4 py-1 text-dark">{{ number_format($paguInduk->pagu_DTI) }}</td>
-                        <td class="px-4 py-1 text-dark">{{ number_format($paguInduk->pagu_DTI+$paguInduk->pagu_BG+$paguInduk->SG) }}</td>
+                        <td class="px-4 py-1 text-dark">
+                            <span class="badge {{ $paguInduk->status === 'Aktif' ? 'bg-success' : 'bg-danger' }}">{{ $paguInduk->status }}</span>
+                        </td>
+                        {{-- <td class="px-4 py-1 text-dark">{{ number_format($paguInduk->pagu_DTI+$paguInduk->pagu_BG+$paguInduk->SG) }}</td> --}}
                         <td class="px-4 py-1 d-flex gap-2">
                                 <button wire:click="openEditModal({{ $paguInduk->id }})"
                                     class="btn btn-sm btn-outline-dark d-flex align-items-center gap-1">
@@ -113,7 +129,7 @@
                     <label for="paguBG" class="form-label">
                         <strong>Pagu Block Grand (BG 1%)</strong>
                     </label>
-                    <input type="number" class="form-control @error('paguBG') is-invalid @enderror" id="pagu_bg"
+                    <input type="text" class="form-control format-rupiah @error('paguBG') is-invalid @enderror" id="pagu_bg"
                         wire:model="paguBG" placeholder="Masukkan Pagu BG..." maxlength="255">
                     @error('paguBG')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -123,7 +139,7 @@
                     <label for="paguSG" class="form-label">
                         <strong>Pagu Spesifik Grand (1,25%)</strong>
                     </label>
-                    <input type="number" class="form-control @error('paguSG') is-invalid @enderror" id="pagu_sg"
+                    <input type="text" class="form-control format-rupiah @error('paguSG') is-invalid @enderror" id="pagu_sg"
                         wire:model="paguSG" placeholder="Masukkan Pagu SG..." maxlength="255">
                     @error('paguSG')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -133,7 +149,7 @@
                     <label for="paguDTI" class="form-label">
                         <strong>Pagu Dana Tambahan Infrastruktur (DTI)</strong>
                     </label>
-                    <input type="number" class="form-control @error('paguDTI') is-invalid @enderror" id="pagu_dti"
+                    <input type="text" class="form-control format-rupiah @error('paguDTI') is-invalid @enderror" id="pagu_dti"
                         wire:model="paguDTI" placeholder="Masukkan Pagu DTI..." maxlength="255">
                     @error('paguDTI')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -206,4 +222,41 @@
     @endif
 </div>
 
+
+<script>
+    function initFormatRupiah() {
+        const rupiahInputs = document.querySelectorAll('.format-rupiah');
+
+        rupiahInputs.forEach(function (input) {
+            input.addEventListener('input', function (e) {
+                let value = e.target.value;
+
+                // Hapus semua karakter selain angka
+                value = value.replace(/\D/g, '');
+
+                // Format angka pakai titik ribuan
+                value = new Intl.NumberFormat('id-ID').format(value);
+
+                e.target.value = value;
+            });
+        });
+    }
+
+    // Panggil sekali ketika halaman pertama kali dimuat
+    document.addEventListener('DOMContentLoaded', function () {
+        initFormatRupiah();
+    });
+
+    // Panggil ulang setiap Livewire memuat ulang DOM (setelah navigasi)
+    document.addEventListener('livewire:navigated', function () {
+        initFormatRupiah();
+    });
+
+    // Tambahan: kalau kamu tidak pakai wire:navigate tapi pakai komponen yang re-render
+    document.addEventListener('livewire:load', function () {
+        Livewire.hook('morph.updated', () => {
+            initFormatRupiah();
+        });
+    });
+</script>
 

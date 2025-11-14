@@ -56,6 +56,18 @@ class CreateRap extends Component
     public $jadwal_akhir;
     public $keterangan;
 
+    public function mount(Request $request)
+    {
+        $type = $request->query('type');
+
+        $this->sumber_dana = match ($type) {
+            'rap-opd-sg' => 'Otsus 1,25%',
+            'rap-opd-bg' => 'Otsus 1%',
+            'rap-opd-dti' => 'DTI',
+            default => null,
+        };
+    }
+
 
     protected function rules()
     {
@@ -65,7 +77,7 @@ class CreateRap extends Component
             // 'id_aktivitas_utama'    => 'required',
             'jenis_kegiatan'        => 'required',
             'volume_tahun_berjalan' => 'required|integer',
-            'pagu_tahun_berjalan'   => 'required|integer',
+            'pagu_tahun_berjalan'   => 'required',
             'sumber_dana'           => 'required',
             'lokasi'                => 'required',
             'sasaran'               => 'required',
@@ -81,6 +93,10 @@ class CreateRap extends Component
     /**
      * Auto-fill field saat sub kegiatan berubah
      */
+
+    public function resetFormAction(){
+            $this->resetForm();
+    }
 
     public function searchSubKegiatan(Request $request){
         $search = $request->input('q', '');
@@ -145,20 +161,36 @@ class CreateRap extends Component
         }
     }
 
-    public function simpan(){
-        // $this->validate();
-        try{
-            $this->validate();
-        }
-        catch(ValidationException $e){
-            $this->dispatch('failed-add-rap', message: "Gagal, Ada form wajib yang belum terisi");
-            throw $e; 
-        }
+    public function resetForm()
+    {
+        $this->reset([
+            'kewenangan', 'id_sub_kegiatan', 'id_aktivitas_utama', 'jenis_kegiatan',
+            'volume_tahun_berjalan', 'volume_silpa_melanjutkan', 'volume_silpa_efisiensi',
+            'satuan', 'pagu_tahun_berjalan', 'pagu_silpa_melanjutkan', 'pagu_silpa_efisiensi',
+            'lokasi', 'titik_lokasi', 'sasaran', 'ppsb', 'penerima_manfaat',
+            'sinergi_dana_lain', 'multiyears', 'jadwal_awal', 'jadwal_akhir', 'keterangan',
+            'kode_klasifikasi', 'sub_kegiatan', 'kinerja', 'indikator', 'klasifikasi_belanja',
+            'aktivitas_utama', 'tema_pembangunan', 'program_prioritas', 'target_keluaran_strategis'
+        ]);
+
+        // (Opsional) kalau masih pakai select2
+        // $this->dispatch('reset-select2');
+    }
+
+    public function simpan(Request $request){
+        
+        $this->validate();    
         
         $opd = Auth::user()->opd_id;
         $kontrol = ModelsKontrol::first();
         $cekDataRap = ModelsRap::where('kode_klasifikasi',$this->kode_klasifikasi)->first();
         // dd($cekDataRap);
+
+        // Replace Titik di input
+        $paguBerjalan       = (int)str_replace('.', '', $this->pagu_tahun_berjalan);
+        $paguMelanjutkan    = (int)str_replace('.', '', $this->pagu_silpa_melanjutkan);
+        $paguEfisiensi      = (int)str_replace('.', '', $this->pagu_silpa_efisiensi);
+        $totalPagu          = $paguBerjalan + $paguMelanjutkan + $paguEfisiensi;
 
         if($kontrol->status === 'Buka'){
             if(!$cekDataRap){
@@ -173,10 +205,10 @@ class CreateRap extends Component
                             'volume_silpa_efisiensi'    =>$this->volume_silpa_efisiensi,
                             'volume_total'              =>$this->volume_silpa_efisiensi + $this->volume_silpa_melanjutkan + $this->volume_tahun_berjalan,
                             'satuan_volume'             =>$this->satuan,
-                            'pagu_tahun_berjalan'       =>$this->pagu_tahun_berjalan,
-                            'pagu_silpa_melanjutkan'    =>$this->pagu_silpa_melanjutkan,
-                            'pagu_silpa_efisiensi'      =>$this->pagu_silpa_efisiensi,
-                            'pagu_total'                =>$this->pagu_tahun_berjalan + $this->pagu_silpa_melanjutkan + $this->pagu_silpa_efisiensi,
+                            'pagu_tahun_berjalan'       =>  $paguBerjalan,
+                            'pagu_silpa_melanjutkan'    =>  $paguMelanjutkan,
+                            'pagu_silpa_efisiensi'      =>  $paguEfisiensi,
+                            'pagu_total'                =>  $totalPagu,
                             'sumber_dana'               =>$this->sumber_dana,
                             'lokasi'                    =>$this->lokasi,
                             'titik_lokasi'              =>$this->titik_lokasi,
@@ -199,20 +231,21 @@ class CreateRap extends Component
                             'program_prioritas'         =>$this->program_prioritas,
                             'target_keluaran_strategis' =>$this->target_keluaran_strategis
                         ]);
-                        $this->dispatch('success-add-data', message: "RAP Berhasil diInput");
+                        $this->dispatch('success-add-data', message: "Berhasil, RAP telah diInput");
+                        $this->resetForm();
                     }
             else{       
-                $this->dispatch('failed-add-rap', message: "Gagal, Sub Kegiatan Sudah ada");
+                $this->dispatch('failed-add-data', message: "Gagal, Sub Kegiatan sudah ada");
             }
                 }
         else{
-            $this->dispatch('failed-add-rap', message: "Status RAP Tutup");
+            $this->dispatch('failed-add-data', message: "Gagal, Status RAP Tutup");
         }
 
     }
 
 
-    #[Layout('components.layouts.admin', ['pageTitle' => 'Data Rencana Anggaran Program'])]
+    #[Layout('components.layouts.admin', ['pageTitle' => 'Form Input Rencana Anggaran Program'])]
     public function render()
     {
         $subKegiatans = ModelSubKegiatan::all();
