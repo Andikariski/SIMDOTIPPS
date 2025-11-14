@@ -83,7 +83,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
    <div class="card shadow-lg border-0 overflow-hidden" style="width: 100%; max-width: 100%; border-radius: 1rem;">
     <div class="row g-0">
         <div class="col-md-5 login-left d-none d-md-flex align-items-center justify-content-center text-white p-4"
-            style="background: linear-gradient(135deg, #04a2dc, #0c3dff);">
+            style="background: linear-gradient(135deg, #04a2dc, #002ddf);">
             <div class="text-center">
                 {{-- <h2 class="fw-bold">SIMDOTIPPS</h2> --}}
                  <img src="{{ asset('assets/img/SerapLogin.png') }}" alt="Logo SIMDOTIPPS" class="img-fluid logo-simdoti" style="max-width: 250px;">

@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import ApexCharts from "apexcharts";
 window.bootstrap = bootstrap;
 
-// Setup Toast sekali saja
+// === Toast setup ===
 const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -12,7 +12,7 @@ const Toast = Swal.mixin({
     timerProgressBar: true,
 });
 
-// sweetalert modal
+// === SweetAlert modal setup ===
 const Swal2 = Swal.mixin({
     customClass: {
         confirmButton: "btn btn-danger me-2",
@@ -21,71 +21,64 @@ const Swal2 = Swal.mixin({
     buttonsStyling: false,
 });
 
-// Jalankan ulang setiap kali Livewire selesai morph/render halaman baru
-
 document.addEventListener("livewire:init", () => {
-    // Memanggil fungsi pertama kali page di load
-    // initAllSelect2();
+    // formatRupiah();
+    // 🔁 Reinit Select2 setiap navigasi / morph
+    Livewire.hook("morph.updated", () => initAllSelect2());
+    document.addEventListener("livewire:navigated", () => initAllSelect2());
+    document.addEventListener("livewire:load", () => initAllSelect2());
 
-    Livewire.hook("morph.updated", () => {
-        // Memanggil fungsi ketika setelah pilih select
-        initAllSelect2();
-    });
-
-    document.addEventListener("livewire:navigated", () => {
-        // Memanggil fungsi ketika setelah pindah halaman
-        initAllSelect2();
-    });
-
+    // === Toast Global Events ===
     Livewire.on("success-login", (data) => {
         Toast.fire({
             icon: "success",
             title: `${data.message} ${data.name}`,
         });
-        setTimeout(() => {
-            window.location.href = "/dashboard";
-        }, 2000);
+        setTimeout(() => (window.location.href = "/dashboard"), 2000);
     });
 
-    // Notifikasi Berhasil Tambah Data All Global
-    Livewire.on("success-add-data", (data) => {
-        Toast.fire({
-            icon: "success",
-            title: data.message,
+    Livewire.on("success-add-data", (data) =>
+        Toast.fire({ icon: "success", title: data.message })
+    );
+
+    Livewire.on("success-delete-data", (data) =>
+        Toast.fire({ icon: "success", title: data.message })
+    );
+
+    Livewire.on("failed-delete-data", (data) =>
+        Toast.fire({ icon: "error", title: data.message })
+    );
+
+    Livewire.on("succes-change", (data) =>
+        Toast.fire({ icon: "success", title: data.message })
+    );
+
+    Livewire.on("failed-add-data", (data) =>
+        Toast.fire({ icon: "error", title: data.message })
+    );
+
+    // Event dari Livewire untuk reset Select2
+    Livewire.on("reset-select2", () => {
+        $(".select2").each(function () {
+            $(this).val(null).trigger("change");
         });
     });
 
-    // Notifikasi Berhasil Hapus Data All Global
-    Livewire.on("success-delete-data", (data) => {
-        Toast.fire({
-            icon: "success",
-            title: data.message,
+    // === SweetAlert confirmations ===
+    const confirmDelete = (title, footer, dispatchEvent, id) => {
+        Swal2.fire({
+            icon: "question",
+            title,
+            showCancelButton: true,
+            cancelButtonText: "Batal",
+            confirmButtonText: "Ya, Hapus Permanen",
+            footer,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch(dispatchEvent, { id });
+            }
         });
-    });
-
-    // Notifikasi Gagal Hapus Data All Global
-    Livewire.on("failed-delete-data", (data) => {
-        Toast.fire({
-            icon: "error",
-            title: data.message,
-        });
-    });
-
-    // Notifikasi Buka Kunci
-    Livewire.on("succes-change", (data) => {
-        Toast.fire({
-            icon: "success",
-            title: data.message,
-        });
-    });
-
-    // Notifikasi Validasi rap
-    Livewire.on("failed-add-rap", (data) => {
-        Toast.fire({
-            icon: "error",
-            title: data.message,
-        });
-    });
+    };
 
     //sweetalert data hapus OPD
     Livewire.on("confirm-delete-data-opd", (data) => {
@@ -193,14 +186,80 @@ document.addEventListener("livewire:init", () => {
         });
     });
 
+    //sweetalert data RAP
+    Livewire.on("confirm-delete-data-RAPBG", (data) => {
+        Swal2.fire({
+            icon: "question",
+            title:
+                "Yakin ingin menghapus RAP <strong class='text-primary'>" +
+                data["kode_klasifikasi"] +
+                "</strong> ?",
+            showCancelButton: true,
+            cancelButtonText: "Batal",
+            confirmButtonText: "Ya, Hapus Permanen",
+            footer: '<strong class="text-danger">Data RAP yang di hapus tidak akan bisa dikembalikan!</strong>',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch("delete-data-RAPBG", {
+                    id: data["id"],
+                });
+            }
+        });
+    });
+    //sweetalert data RAP
+    Livewire.on("confirm-delete-data-RAPSG", (data) => {
+        Swal2.fire({
+            icon: "question",
+            title:
+                "Yakin ingin menghapus RAP <strong class='text-primary'>" +
+                data["kode_klasifikasi"] +
+                "</strong> ?",
+            showCancelButton: true,
+            cancelButtonText: "Batal",
+            confirmButtonText: "Ya, Hapus Permanen",
+            footer: '<strong class="text-danger">Data RAP yang di hapus tidak akan bisa dikembalikan!</strong>',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch("delete-data-RAPSG", {
+                    id: data["id"],
+                });
+            }
+        });
+    });
+    //sweetalert data RAP
+    Livewire.on("confirm-delete-data-RAPDTI", (data) => {
+        Swal2.fire({
+            icon: "question",
+            title:
+                "Yakin ingin menghapus RAP <strong class='text-primary'>" +
+                data["kode_klasifikasi"] +
+                "</strong> ?",
+            showCancelButton: true,
+            cancelButtonText: "Batal",
+            confirmButtonText: "Ya, Hapus Permanen",
+            footer: '<strong class="text-danger">Data RAP yang di hapus tidak akan bisa dikembalikan!</strong>',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch("delete-data-RAPDTI", {
+                    id: data["id"],
+                });
+            }
+        });
+    });
+
+    // === Inisialisasi semua Select2 ===
     function initAllSelect2() {
-        // Inisialisasi semua select dengan AJAX
+        // Pastikan jQuery + Select2 sudah siap
+        if (typeof $ === "undefined" || typeof $.fn.select2 === "undefined") {
+            console.warn("Select2 belum siap. Skip initAllSelect2().");
+            return;
+        }
 
         const $selectSK = $("#selectSubKegiatan");
-        const subKegiatanUrl = $selectSK.data("url"); // otomatis ambil dari atribut data-url
+        const subKegiatanUrl = $selectSK.data("url");
 
         const $selectAK = $("#selectActivitasUtama");
-        const aktivitasUtamaUrl = $selectAK.data("url"); // otomatis ambil dari atribut data-url
+        const aktivitasUtamaUrl = $selectAK.data("url");
 
         initSelect2(
             "#selectSubKegiatan",
@@ -216,14 +275,7 @@ document.addEventListener("livewire:init", () => {
         );
     }
 
-    /**
-     * Fungsi generik untuk inisialisasi Select2 (mendukung AJAX)
-     * @param {string} selector - ID elemen select
-     * @param {string} eventName - Nama event Livewire
-     * @param {string|null} ajaxUrl - URL endpoint untuk pencarian AJAX
-     * @param {string|null} textField - Nama field teks yang ditampilkan dari hasil JSON
-     */
-
+    // === Fungsi generik Select2 ===
     function initSelect2(
         selector,
         eventName,
@@ -233,30 +285,25 @@ document.addEventListener("livewire:init", () => {
         const $select = $(selector);
         if ($select.length === 0) return;
 
-        // Hancurkan Select2 lama jika sudah terpasang
-        if ($select.hasClass("select2-hidden-accessible")) {
+        // 💡 Aman: hanya destroy kalau memang sudah ada instance Select2
+        if ($select.data("select2")) {
             $select.off("change.select2");
             $select.select2("destroy");
         }
 
-        // Delay sedikit supaya DOM sudah siap sepenuhnya
+        // Tunggu DOM stabil dulu
         setTimeout(() => {
             const config = {
-                // theme: "bootstrap-5",
                 width: "100%",
-                // placeholder: "-- Pilih Opsi --",
                 allowClear: true,
             };
 
-            // Jika pakai AJAX
             if (ajaxUrl) {
                 config.ajax = {
                     url: ajaxUrl,
                     dataType: "json",
                     delay: 300,
-                    data: (params) => ({
-                        q: params.term, // parameter pencarian
-                    }),
+                    data: (params) => ({ q: params.term }),
                     processResults: (data) => ({
                         results: data.map((item) => ({
                             id: item.id,
@@ -264,13 +311,12 @@ document.addEventListener("livewire:init", () => {
                         })),
                     }),
                 };
-                config.minimumInputLength = 2; // baru cari setelah ketik 2 huruf
+                config.minimumInputLength = 2;
             }
 
-            // Inisialisasi Select2
+            // Inisialisasi aman
             $select.select2(config);
 
-            // Event perubahan
             $select.on("change.select2", function () {
                 const value = $(this).val();
                 console.log(`${selector} changed:`, value);
@@ -278,4 +324,23 @@ document.addEventListener("livewire:init", () => {
             });
         }, 300);
     }
+
+    // function formatRupiah() {
+    //     document.addEventListener("DOMContentLoaded", function () {
+    //         const rupiahInputs = document.querySelectorAll(".format-rupiah");
+    //         rupiahInputs.forEach(function (input) {
+    //             input.addEventListener("input", function (e) {
+    //                 let value = e.target.value;
+
+    //                 // Hapus semua karakter selain angka
+    //                 value = value.replace(/\D/g, "");
+
+    //                 // Format dengan titik pemisah ribuan
+    //                 value = new Intl.NumberFormat("id-ID").format(value);
+
+    //                 e.target.value = value;
+    //             });
+    //         });
+    //     });
+    // }
 });

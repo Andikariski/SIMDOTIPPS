@@ -31,14 +31,58 @@
             </li>
 
             @if (Auth()->user()->is_admin == 0)
-                <li class="nav-item">
-                <a wire:navigate href="{{ route('rap.index') }}"
+                {{-- <li class="nav-item">
+                <a wire:navigate href="{{ route('rap.rapBG') }}"
                     class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('rap.*') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
                     :class="{ 'justify-content-center': sidebarCollapsed }">
                     <i
                         class="bi bi-wallet {{ request()->routeIs('rap.*') ? 'text-light' : 'text-dark' }}"></i>
                     <span x-show="!sidebarCollapsed">RAP Opd</span>
+                </a> --}}
+            {{-- </li> --}}
+
+             <li class="nav-item" x-data="{ open: {{ (request()->get('type') === 'rap-opd-bg' || request()->get('type') === 'rap-opd-sg' ||request()->get('type') === 'rap-opd-dti') ? 'true' : 'false' }} }">
+                <!-- Parent link (dropdown trigger) -->
+                <a href="#" @click.prevent="open = !open"
+                    class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center justify-content-between gap-1 {{ request()->routeIs('opd.rap.*') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
+                    :class="{ 'justify-content-center': sidebarCollapsed }">
+                    <div class="d-flex align-items-center gap-1">
+                        <i
+                            class="bi bi-cash-stack {{ request()->routeIs('opd.rap.*') ? 'text-light' : 'text-dark' }}"></i>
+                        <span x-show="!sidebarCollapsed">Data RAP</span>
+                    </div>
+                    <i class="bi" :class="open ? 'bi-chevron-up' : 'bi-chevron-down'"
+                        x-show="!sidebarCollapsed"></i>
                 </a>
+
+                <!-- Dropdown menu -->
+                <ul class="list-unstyled ps-4 mt-1" x-show="open && !sidebarCollapsed" x-transition
+                    style="display: none;">
+                    <li>
+                        <a wire:navigate href="{{ route('opd.rap.rapBG', ['type' => 'rap-opd-bg']) }}"
+                            class="d-block py-1 text-decoration-none {{ request()->get('type') === 'rap-opd-bg' ? 'fw-bold text-primary' : 'text-dark' }}">
+                            RAP Block Grand
+                        </a>
+                    </li>
+                    <li>
+                        <a wire:navigate href="{{ route('opd.rap.rapSG', ['type' => 'rap-opd-sg']) }}"
+                            class="d-block py-1 text-decoration-none {{ request()->get('type') === 'rap-opd-sg' ? 'fw-bold text-primary' : 'text-dark' }}">
+                            RAP Spesifik Grand
+                        </a>
+                    </li>
+                    <li>
+                        <a wire:navigate href="{{ route('opd.rap.rapDTI', ['type' => 'rap-opd-dti']) }}"
+                            class="d-block py-1 text-decoration-none {{ request()->get('type') === 'rap-opd-dti' ? 'fw-bold text-primary' : 'text-dark' }}">
+                            RAP DTI
+                        </a>
+                    </li>
+                    <li>
+                        <a wire:navigate href="{{ route('opd.rap.rapDTI', ['type' => 'rap-opd-dti']) }}"
+                            class="d-block py-1 text-decoration-none {{ request()->get('type') === 'rap-opd-dti' ? 'fw-bold text-primary' : 'text-dark' }}">
+                            Riwayat RAP
+                        </a>
+                    </li>
+                </ul>
             </li>
             @endif
           
@@ -77,6 +121,15 @@
                     <i
                         class="bi bi-wallet {{ request()->routeIs('superadmin.rap') ? 'text-light' : 'text-dark' }}"></i>
                     <span x-show="!sidebarCollapsed">RAP Induk</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a wire:navigate href="{{ route('superadmin.kontrol') }}"
+                    class="sidebar-nav-link text-dark rounded-1 d-flex align-items-center gap-1 {{ request()->routeIs('superadmin.kontrol') ? 'bg-primary text-light' : 'bg-white text-dark' }}"
+                    :class="{ 'justify-content-center': sidebarCollapsed }">
+                    <i
+                        class="bi bi-gear {{ request()->routeIs('superadmin.kontrol') ? 'text-light' : 'text-dark' }}"></i>
+                    <span x-show="!sidebarCollapsed">Menu Kontrol</span>
                 </a>
             </li>
             {{-- <li class="nav-item">

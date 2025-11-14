@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('tbl_pagu_induk', function (Blueprint $table) {
             $table->id();
+            $table->year('tahun_pagu')->unique(); // hanya satu pagu per tahun
             $table->bigInteger('pagu_SG')->default(0);
             $table->bigInteger('pagu_BG')->default(0);
             $table->bigInteger('pagu_DTI')->default(0);
-            $table->year('tahun_pagu');
+            $table->enum('status', ['Aktif', 'Nonaktif'])->default('Nonaktif');
             $table->timestamps();
         });
     }

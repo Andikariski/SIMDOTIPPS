@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pagu extends Model
 {
-    protected $table = 'tbl_pagu';
+    protected $table = 'tbl_pagu_opd';
 
     protected $fillable = [
         'fkid_opd',

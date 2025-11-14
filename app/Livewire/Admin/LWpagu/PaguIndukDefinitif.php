@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\LWpagu;
 
 use App\Livewire\Admin\SuperAdminAuth as AdminSuperAdminAuth;
+use App\Models\Pagu as ModelPaguOPD;
 use App\Models\PaguInduk as ModelPaguInduk;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
@@ -21,11 +22,35 @@ class PaguIndukDefinitif extends AdminSuperAdminAuth
     public $paguSG;
     public $paguDTI;
     public $tahunPagu;
+    public $paguInduk;
+
+    public $tahun_pagu;
 
     // Modal state
     public $showModal = false;
     public $showDetailModal = false;
     public $modalTitle = '';
+
+    public function toggleStatus($id)
+    {
+        $paguInduk = ModelPaguInduk::findOrFail($id);
+        $cekJumlahAktif = ModelPaguInduk::where('status','Aktif')
+                                            ->where('id',$id)->count();
+
+        if($cekJumlahAktif === 1){
+            $this->dispatch('failed-add-data',message: "Gagal, Tidak bisa menonaktifkan tahun yang aktif.");
+        }
+        else{
+            if ($paguInduk->status === 'Aktif') {
+                $paguInduk->update(['status' => 'Nonaktif']);
+            } else {
+                $paguInduk->update(['status' => 'Aktif']);
+            }
+            $this->dispatch('success-add-data',message: "Berhasil, Pagu Definitif {$paguInduk->tahun_pagu} telah diaktifkan.");
+            // session()->flash('message', 'Status tahun ' . $pagu->tahun_pagu . ' telah diperbarui!');
+        }
+        
+    }
     
     protected function rules()
     {
@@ -40,6 +65,7 @@ class PaguIndukDefinitif extends AdminSuperAdminAuth
 
     public function openTambahModal()
     {
+        
         $this->resetForm();
         $this->isEdit = false;
         $this->modalTitle = 'Input Pagu Induk Definitif';
@@ -48,6 +74,7 @@ class PaguIndukDefinitif extends AdminSuperAdminAuth
 
       public function resetForm()
     {
+        $this->tahunPagu = '';
         $this->paguBG = '';
         $this->paguSG = '';
         $this->paguDTI = '';
@@ -78,24 +105,50 @@ class PaguIndukDefinitif extends AdminSuperAdminAuth
         }
     }
 
-     #[On('delete-data-paguInduk')]
+
+    #[On('delete-data-paguInduk')]
     public function hapus($id)
     {
         try {
-            $paguInduk = ModelPaguInduk::find($id);
-                $paguInduk->delete();
-                $this->dispatch('success-delete-data',message:  "Pagu {$paguInduk->tahun_pagu} berhasil dihapus.");
-                $this->closeModal();
-            
+            // 1️⃣ Cari data pagu induk berdasarkan id
+            $paguInduk = ModelPaguInduk::findOrFail($id);
+
+            // 2️⃣ Hitung apakah ada data pagu OPD yang pakai tahun ini
+            $count = ModelPaguOpd::where('tahun_pagu', $paguInduk->tahun_pagu)->count();
+
+            // 3️⃣ Jika masih ada, batalkan penghapusan dan tampilkan alert
+            if ($count > 0) {
+                $this->dispatch(
+                    'failed-delete-data',
+                    message: "Gagal menghapus! Masih ada $count data Pagu OPD untuk tahun {$paguInduk->tahun_pagu}."
+                );
+                return;
+            }
+
+            // 4️⃣ Jika aman, hapus data pagu induk
+            $paguInduk->delete();
+
+            // 5️⃣ Kirim notifikasi sukses
+            $this->dispatch(
+                'success-delete-data',
+                message: "Berhasil, Pagu Induk tahun {$paguInduk->tahun_pagu} telah dihapus."
+            );
+
         } catch (\Exception $e) {
-            $this->dispatch('failed-delete-data',message: 'Gagal Menghapus Data Pagu');
+            // 7️⃣ Tangkap error umum
+            $this->dispatch(
+                'failed-delete-data',
+                message: 'Terjadi kesalahan saat menghapus data pagu induk.'
+            );
         }
     }
 
     public function simpan()
     {
         $this->validate();
-           if ($this->isEdit) {
+        $cekDataPagu = ModelPaguInduk::where('tahun_pagu',$this->tahunPagu)->first();
+
+            if ($this->isEdit) {
                 // Update data
                 $pagu = ModelPaguInduk::find($this->paguId);
                 $pagu->update([
@@ -106,8 +159,10 @@ class PaguIndukDefinitif extends AdminSuperAdminAuth
                     // 'tahun_pagu'    =>  $this->tahunPagu = date('Y')
                     'tahun_pagu'    =>  $this->tahunPagu
                 ]);
-                $this->dispatch('success-add-data',message: "Pagu Definitif {$this->tahunPagu} berhasil diubah.");
+                $this->dispatch('success-add-data',message: "Berhasil, Pagu Definitif {$this->tahunPagu} telah diubah.");
+                $this->closeModal();
             } else {
+                if(!$cekDataPagu){
                 // Tambah data baru
                 ModelPaguInduk::create([
                     'pagu_SG'       => $this->paguSG,
@@ -115,10 +170,14 @@ class PaguIndukDefinitif extends AdminSuperAdminAuth
                     'pagu_DTI'      => $this->paguDTI,
                     // 'tahun_pagu'    =>  $this->tahunPagu = date('Y')
                     'tahun_pagu'    =>  $this->tahunPagu 
-                ]);
-                $this->dispatch('success-add-data',message: "Pagu Definitif {$this->tahunPagu} berhasil ditambahkan.");
+                    ]);
+                    $this->dispatch('success-add-data',message: "Berhasil, Pagu Definitif {$this->tahunPagu} telah ditambahkan.");
+                    $this->closeModal();
+                }
+                else{
+                    $this->dispatch('failed-add-data', message: "Gagal, Pagu Tahun {$this->tahunPagu} Sudah ada.");
+                }
             }
-            $this->closeModal();
     }
 
     #[Layout('components.layouts.admin',['pageTitle' => 'Data Pagu Induk'])]

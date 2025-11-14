@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Livewire\Admin\SuperAdminAuth as AdminSuperAdminAuth;
 
 
-class RapSuperAdmin extends Component
+class RapSuperAdmin extends AdminSuperAdminAuth
 {
     public $status;
 
@@ -27,15 +27,15 @@ class RapSuperAdmin extends Component
     public function loadStatus()
     {
         $kontrol = ModelKontrol::firstOrCreate(
-            ['nama' => 'RAP'],
+            ['tipe' => 'RAP_Akses'],
             ['status' => 'Tutup']
         );
         $this->status = $kontrol->status;
     }
 
-    public function toggleStatus()
+    public function toggleStatusAksesRAP()
     {
-        $kontrol = ModelKontrol::where('nama', 'RAP')->first();
+        $kontrol = ModelKontrol::where('tipe', 'RAP_Akses')->first();
         if ($kontrol) {
             $kontrol->status = $kontrol->status === 'Buka' ? 'Tutup' : 'Buka';
             $kontrol->save();

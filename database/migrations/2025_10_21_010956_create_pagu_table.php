@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tbl_pagu', function (Blueprint $table) {
+       Schema::create('tbl_pagu_opd', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('fkid_opd');
             $table->bigInteger('pagu_SG')->default(0);
@@ -21,7 +21,9 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('fkid_opd')->references('id')->on('tbl_opd')->onDelete('cascade');
+            $table->unique(['fkid_opd', 'tahun_pagu']);
         });
+
     }
 
     /**
